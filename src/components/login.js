@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, SafeAreaView, StatusBar } from 'react-native';
-import { Value } from "react-native-reanimated";
+import { StyleSheet, Text, View, SafeAreaView, StatusBar ,TextInput, Button } from 'react-native';
 import { useState, useEffect } from "react";
 import {Authenticateservice} from "../services/sharedservices";
 import AsyncStorage from '@react-native-async-storage/async-storage';

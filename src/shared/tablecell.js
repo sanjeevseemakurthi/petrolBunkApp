@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet,TextInput, Text, Button,View,ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Tablecell(props) {
+  useEffect(()=>{
+    onchangecell(props.celldata);
+  },[props.celldata])
     let [eachcell, onchangecell] = useState(props.celldata); 
    function changedata(value) {
     onchangecell(value);

@@ -9,18 +9,16 @@ export default function App() {
   useEffect(()=>{sessionchecking()},[]);
   return (
     <>
-    {/* {Authenticated && */}
-    {
+    { Authenticated && 
      <NavigationContainer >
           <Routing/>
       </NavigationContainer >
     }
-    {/* {!Authenticated && <Login changestate = {changestate}/>} */}
+    {!Authenticated && <Login changestate = {changestate}/>}
     </>
   );
   async function sessionchecking()  {
     await sessioncheck().then((res)=>{
-      console.log(res.data);
       setAuthenticated(true);
     }).catch(er=>{
       setAuthenticated(false);

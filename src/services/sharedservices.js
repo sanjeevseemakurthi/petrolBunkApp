@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const url = 'https://10.0.2.2:8080/';
+const url = 'http://localhost:8080/';
 axios.interceptors.request.use(
     req=>{
             async function addheader() {
@@ -52,4 +52,7 @@ export function Authenticateservice(payload) {
 }
 export function sessioncheck() {
     return axios.get(url + 'sessioncheck')
+}
+export function getpumps() {
+    return axios.get(url + 'getpumps')
 }

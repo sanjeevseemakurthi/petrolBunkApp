@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import { StyleSheet,TextInput, Text, Button,View,ScrollView } from 'react-native';
 import Tablerow from "./tablerow";
 export default function Table(props) {
-    let tabledata = props.tabledata;
+    // let tabledata = props.tabledata;
     let columns = props.columns;
     function changingtabledata(rowindex, columnname,value) { 
-      tabledata[rowindex][columnname] = value;
-      props.datachanged(tabledata);
+      props.tabledata[rowindex][columnname] = value;
+      props.datachanged(props.tabledata,rowindex, columnname,value);
     }
     
     return (
       <>
       <ScrollView horizontal={true}>
-        <View style = {tabledata.container}>
+        <View style = {props.tabledata.container}>
           <View style= {tablestyles.rows} >
               {
               columns.map((data,index)=>
@@ -23,14 +23,14 @@ export default function Table(props) {
           </View>
           <View>
               {
-              tabledata.map((eachdata,rowindex)=>
+              props.tabledata.map((eachdata,rowindex)=>
                 <Tablerow key={'data'+rowindex} rowdata = {eachdata} rowindex = {rowindex} columns = {columns} changingtabledata = {changingtabledata}/>
               )}
           </View>
         </View>
       </ScrollView>
       <View>
-        <Text>{tabledata | JSON}</Text>
+        <Text>{props.tabledata | JSON}</Text>
         <Button title="click me " onPress={()=>{
           console.log(tabledata)
         }}></Button>

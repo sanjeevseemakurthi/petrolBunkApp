@@ -2,7 +2,36 @@ import React from "react";
 import { StyleSheet,TextInput, Text, Button,View,ScrollView } from 'react-native';
 import { useState, useEffect } from "react";
 import Table from "../shared/table";
+import {getpumps} from "../services/sharedservices"
 export default function Homepage() {
+  useEffect(()=>{populatedata()},[]);
+  async function populatedata() {
+    await getpumps().then((res)=>{
+      let holddata =[];
+      res.data.data.forEach(element => {
+        let row = {
+          amount:0,
+          closing:0,
+          netsale:0,
+          opening:element.latestclosedreading,
+          price:element.price,
+          testing:5,
+          pumpid: element.id,
+          product: element.product,
+          tank: element.tank,
+        }
+        holddata.push(row);
+      });
+      holddata.forEach(element => {
+        element.netsale = element.opening - element.closing - element.testing;
+        element.amount =  element.netsale * element.price;
+      });
+      onchangetabledata(holddata);
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
+  let [tabledata, onchangetabledata] = useState([]);
   let [columns , onchangecolumns] = useState([
     {
     displayname: 'Tank',
@@ -13,10 +42,10 @@ export default function Homepage() {
     },
     {
     displayname: 'Opening Redings',
-    actualname: 'openingredings',
+    actualname: 'opening',
     type : 'numeric',
     width: 100,
-    editable : false
+    editable : true
     },
     {
     displayname: 'Product',
@@ -27,33 +56,49 @@ export default function Homepage() {
     },
     {
     displayname: 'Closing Reding',
-    actualname: 'closingredings',
+    actualname: 'closing',
     type : 'numeric',
     width: 100,
     editable:true
     },
-]);
-let [tabledata, onchangetabledata] = useState([
-  {
-    tank:'1' ,
-    openingredings:'26565',
-    product: 'HSD',
-    closingredings : '65565'
-  },
-  {
-    tank:'2',
-    openingredings:'26565',
-    product: 'HSD',
-    closingredings : '65565'
-  }
+    {
+      displayname: 'Testing',
+      actualname: 'testing',
+      type : 'numeric',
+      width: 100,
+      editable:true
+    },
+    {
+      displayname: 'Total lts',
+      actualname: 'netsale',
+      type : 'numeric',
+      width: 100,
+      editable:true
+    },
+    {
+      displayname: 'Price',
+      actualname: 'price',
+      type : 'numeric',
+      width: 100,
+      editable:true
+    },
+    {
+      displayname: 'Amount',
+      actualname: 'amount',
+      type : 'numeric',
+      width: 100,
+      editable:true
+    },
 ]);
 let finaldata;
-function datachanged(data) {
-  finaldata =  data;
+function datachanged(data,rowindex, columnname,value) {
+  data[rowindex].total =   data[rowindex].closing - data[rowindex].opening - data[rowindex].testing;
+  data[rowindex].amount =  data[rowindex].total * data[rowindex].price;
+  onchangetabledata([...tabledata]);
 }
     return (
       <>
-        <Table tabledata = {tabledata} columns = {columns} datachanged = {datachanged}/>
+      <Table tabledata = {tabledata} columns = {columns} datachanged = {datachanged}/>
       </>
     );
 }
