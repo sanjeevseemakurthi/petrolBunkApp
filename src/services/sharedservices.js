@@ -56,3 +56,12 @@ export function sessioncheck() {
 export function getpumps() {
     return axios.get(url + 'getpumps')
 }
+export function getengineoils() {
+    return axios.get(url + 'getengineoils')
+}
+export function savereadings(payload) {
+    return axios.post(url + 'savereadings',payload)
+}
+export function saveengineoils(payload) {
+    return axios.post(url+ 'saveengineoils',payload)
+}

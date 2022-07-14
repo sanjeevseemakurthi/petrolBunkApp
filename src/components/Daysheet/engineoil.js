@@ -1,34 +1,29 @@
 import React from "react";
 import { StyleSheet,TextInput, Text, Button,View,ScrollView } from 'react-native';
 import { useState, useEffect } from "react";
-import Table from "../shared/table";
-import {getpumps,savereadings} from "../services/sharedservices"
-export default function Homepage() {
+import Table from "../../shared/table";
+import {getengineoils,saveengineoils} from "../../services/sharedservices"
+export default function Engineoil() {
   let  formattedToday = "";
   useEffect(()=>{
     populatedata()
   },[]);
   async function populatedata() {
-    await getpumps().then((res)=>{
+    await getengineoils().then((res)=>{
       let holddata =[];
       res.data.data.forEach(element => {
         let row = {
-          amount:0,
-          closing:0,
-          netsale:0,
-          opening:element.latestclosedreading,
-          price:element.price,
-          testing:5,
-          pumpid: element.id,
-          product: element.product,
-          tank: element.tank,
-          date : new Date()
+             date :  new Date(),
+             qtyleft: element.qtyleft,
+             qtyinitial: element.qtyleft,
+             sales: 0,
+             Purchase: 0,
+             rate:0,
+             amount: 0,
+             eid: element.id,
+             name:element.name
         }
         holddata.push(row);
-      });
-      holddata.forEach(element => {
-        element.netsale = element.opening - element.closing - element.testing;
-        element.amount =  element.netsale * element.price;
       });
       onchangetabledata(holddata);
     }).catch((err)=>{
@@ -38,50 +33,43 @@ export default function Homepage() {
   let [tabledata, onchangetabledata] = useState([]);
   let [columns , onchangecolumns] = useState([
     {
-    displayname: 'Tank',
-    actualname: 'tank',
-    type : 'numeric',
+    displayname: 'Name',
+    actualname: 'name',
+    type : 'sentences',
     width: 60,
     editable : false
     },
     {
-    displayname: 'Opening Redings',
-    actualname: 'opening',
+    displayname: 'Initial QTY',
+    actualname: 'qtyinitial',
+    type : 'numeric',
+    width: 100,
+    editable : false
+    },
+    {
+    displayname: 'Qtyleft',
+    actualname: 'qtyleft',
     type : 'numeric',
     width: 100,
     editable : true
     },
     {
-    displayname: 'Product',
-    actualname: 'product',
+    displayname: 'Sales',
+    actualname: 'sales',
     type : 'default',
     width: 60,
-    editable : false
+    editable : true
     },
     {
-    displayname: 'Closing Reding',
-    actualname: 'closing',
+    displayname: 'Purchase',
+    actualname: 'Purchase',
     type : 'numeric',
     width: 100,
     editable:true
     },
     {
-      displayname: 'Testing',
-      actualname: 'testing',
-      type : 'numeric',
-      width: 100,
-      editable:true
-    },
-    {
-      displayname: 'Total lts',
-      actualname: 'netsale',
-      type : 'numeric',
-      width: 100,
-      editable:true
-    },
-    {
-      displayname: 'Price',
-      actualname: 'price',
+      displayname: 'Rate',
+      actualname: 'rate',
       type : 'numeric',
       width: 100,
       editable:true
@@ -92,17 +80,16 @@ export default function Homepage() {
       type : 'numeric',
       width: 100,
       editable:true
-    },
+    }
 ]);
 let finaldata;
 function datachanged(data,rowindex, columnname,value) {
-  data[rowindex].total =   data[rowindex].closing - data[rowindex].opening - data[rowindex].testing;
-  data[rowindex].amount =  data[rowindex].total * data[rowindex].price;
+  data[rowindex].qtyleft =   parseInt(data[rowindex].qtyinitial) - parseInt(data[rowindex].sales) + parseInt(data[rowindex].Purchase);
   onchangetabledata([...tabledata]);
 }
 async function submitdata() {
   console.log("hiogdh");
-  await savereadings(tabledata).then((res)=>{
+  await saveengineoils(tabledata).then((res)=>{
     console.log(res);
   }).catch()
 }

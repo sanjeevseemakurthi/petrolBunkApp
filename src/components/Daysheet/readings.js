@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet,TextInput, Text, Button,View,ScrollView } from 'react-native';
 import { useState, useEffect } from "react";
-import Table from "../shared/table";
-import {getpumps,savereadings} from "../services/sharedservices"
-export default function Homepage() {
+import Table from "../../shared/table";
+import {getpumps,savereadings} from "../../services/sharedservices"
+export default function Readings() {
   let  formattedToday = "";
   useEffect(()=>{
     populatedata()

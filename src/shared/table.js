@@ -29,12 +29,6 @@ export default function Table(props) {
           </View>
         </View>
       </ScrollView>
-      <View>
-        <Text>{props.tabledata | JSON}</Text>
-        <Button title="click me " onPress={()=>{
-          console.log(tabledata)
-        }}></Button>
-      </View>
   </>
     );
 }
