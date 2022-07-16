@@ -1,108 +1,87 @@
-import React, { useState } from 'react';
-  import { StyleSheet, Text, View } from 'react-native';
-  import { Dropdown } from 'react-native-element-dropdown';
-  import AntDesign from 'react-native-vector-icons/AntDesign';
+import React, { useState,useEffect } from 'react';
+import { StyleSheet, Text, View,Button } from 'react-native';
+import Table from '../../shared/table';
+import { getaccounts} from "../../services/sharedservices"
 
-  const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' },
-    { label: 'Item 5', value: '5' },
-    { label: 'Item 6', value: '6' },
-    { label: 'Item 7', value: '7' },
-    { label: 'Item 8', value: '8' },
-  ];
-
-  const Perticulars = () => {
-    const [value, setValue] = useState(null);
-    const [isFocus, setIsFocus] = useState(false);
-
-    const renderLabel = () => {
-      if (value || isFocus) {
-        return (
-          <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-            Dropdown label
-          </Text>
-        );
-      }
-      return null;
-    };
-
-    return (
-      <View style={styles.container}>
-        {renderLabel()}
-        <Dropdown
-          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          iconStyle={styles.iconStyle}
-          data={data}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={!isFocus ? 'Select item' : '...'}
-          searchPlaceholder="Search..."
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={item => {
-            setValue(item.value);
-            setIsFocus(false);
-          }}
-          renderLeftIcon={() => (
-            <AntDesign
-              style={styles.icon}
-              color={isFocus ? 'blue' : 'black'}
-              name="Safety"
-              size={20}
-            />
-          )}
-        />
-      </View>
-    );
+export default function Perticulars() {
+  useEffect(()=>{
+    populatedata()
+  },[]);
+  async function populatedata() {
+    await getaccounts().then((res)=>{
+      let holddata =[];
+      res.data.data.forEach(element => {
+        let row = {
+          label: element.name,
+          value: element.id
+        }
+        holddata.push(row);
+      });
+      
+      let columndata = [
+        {
+        displayname: 'Name',
+        actualname: 'name',
+        type : 'numeric',
+        width: 300,
+        editable : false,
+        showselection : true,
+        optiondata : holddata
+        },
+        {
+        displayname: 'Jama',
+        actualname: 'jama',
+        type : 'numeric',
+        width: 100,
+        editable : true
+        },
+        {
+        displayname: 'Karchu',
+        actualname: 'karchu',
+        type : 'numeric',
+        width: 100,
+        editable : true
+        },
+    ];
+      onchangecolumns(columndata);
+      console.log("hi");
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
+  let [tabledata, onchangetabledata] = useState([]);
+  let [columns , onchangecolumns] = useState([]);
+  function datachanged(data,rowindex, columnname,value) {
+    onchangetabledata([...tabledata]);
+  }
+  async function submitdata() {
+    console.log("hiogdh");
+    await saveengineoils(tabledata).then((res)=>{
+      console.log(res);
+    }).catch()
+  }
+  function addrow() {
+    let newrow = {name:-1,jama:0,karchu:0,}
+    onchangetabledata([...tabledata,newrow]);
+  }
+  function removerow() {
+    let data =tabledata.splice(-1,1);
+    onchangetabledata([...data]);
+  }
+  return (
+    <View>
+    <Table tabledata = {tabledata} columns = {columns} datachanged = {datachanged}/>
+    <View >
+      <Button title="Addrow" onPress={addrow}/>
+      <Button title="Removelastrow" onPress={removerow}/>
+    </View>
+    <Button title="Submit" onPress={submitdata}/>
+    </View>
+  );
   };
 
-  export default Perticulars;
-
-  const styles = StyleSheet.create({
-    container: {
-      backgroundColor: 'white',
-      padding: 16,
+  const tablestyles = StyleSheet.create({
+    container : {
+      width :800
     },
-    dropdown: {
-      height: 50,
-      borderColor: 'gray',
-      borderWidth: 0.5,
-      borderRadius: 8,
-      paddingHorizontal: 8,
-    },
-    icon: {
-      marginRight: 5,
-    },
-    label: {
-      position: 'absolute',
-      backgroundColor: 'white',
-      left: 22,
-      top: 8,
-      zIndex: 999,
-      paddingHorizontal: 8,
-      fontSize: 14,
-    },
-    placeholderStyle: {
-      fontSize: 16,
-    },
-    selectedTextStyle: {
-      fontSize: 16,
-    },
-    iconStyle: {
-      width: 20,
-      height: 20,
-    },
-    inputSearchStyle: {
-      height: 40,
-      fontSize: 16,
-    },
-  });
+  })

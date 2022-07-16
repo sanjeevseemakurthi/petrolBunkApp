@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet,TextInput, Text, Button,View,ScrollView } from 'react-native';
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext} from "react";
 import Table from "../../shared/table";
 import {getengineoils,saveengineoils} from "../../services/sharedservices"
+import { DaysheetContext } from "./Context/DaysheetContext";
+
 export default function Engineoil() {
+  const [state, setState] = useContext(DaysheetContext);
   let  formattedToday = "";
+  console.log(state);
   useEffect(()=>{
     populatedata()
   },[]);

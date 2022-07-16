@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Engineoil from './Daysheet/engineoil';
 import Perticulars from './Daysheet/perticulars';
 import Readings from './Daysheet/readings';
+import { DaysheetProvider } from './Daysheet/Context/DaysheetContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +20,13 @@ function MyTabs() {
 }
 
 export default function Daysheet() {
+    return(
+      <DaysheetProvider>
+          <Navigation/>
+      </DaysheetProvider>
+    )
+}
+function Navigation() {
   return (
     <NavigationContainer independent={true}>
       <MyTabs />
