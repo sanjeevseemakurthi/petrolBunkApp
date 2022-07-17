@@ -89,6 +89,13 @@ export default function Engineoil() {
 let finaldata;
 function datachanged(data,rowindex, columnname,value) {
   data[rowindex].qtyleft =   parseInt(data[rowindex].qtyinitial) - parseInt(data[rowindex].sales) + parseInt(data[rowindex].Purchase);
+  let amount = 0;
+  let test = state
+  data.forEach(element => {
+    amount = amount + parseInt(element.amount);
+  });
+  test.engineoilsales = amount;
+  setState(test);
   onchangetabledata([...tabledata]);
 }
 async function submitdata() {

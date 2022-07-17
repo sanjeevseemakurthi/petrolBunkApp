@@ -68,3 +68,6 @@ export function saveengineoils(payload) {
 export function getaccounts() {
     return axios.get(url + 'getaccounts')
 }
+export function saveperticulars(payload) {
+    return axios.post(url + 'saveperticulars',payload)
+}

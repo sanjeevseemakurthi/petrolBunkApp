@@ -7,10 +7,6 @@ import { DaysheetContext } from "./Context/DaysheetContext";
 
 export default function Readings() {
   const [state, setState] = useContext(DaysheetContext);
-  let  formattedToday = "";
-  let test = state
-  test.oilsales = 500;
-  setState(test);
   console.log(state);
   useEffect(()=>{
     populatedata()
@@ -105,6 +101,13 @@ let finaldata;
 function datachanged(data,rowindex, columnname,value) {
   data[rowindex].total =   data[rowindex].closing - data[rowindex].opening - data[rowindex].testing;
   data[rowindex].amount =  data[rowindex].total * data[rowindex].price;
+  let amount = 0;
+  let test = state
+  data.forEach(element => {
+    amount = amount + element.amount;
+  });
+  test.oilsales = amount;
+  setState(test);
   onchangetabledata([...tabledata]);
 }
 async function submitdata() {
