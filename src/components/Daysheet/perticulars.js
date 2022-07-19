@@ -7,6 +7,7 @@ export default function Perticulars() {
   const [state, setState] = useContext(DaysheetContext);
   let [tabledata, onchangetabledata] = useState([]);
   let [columns , onchangecolumns] = useState([]);
+  let [cashleft , cashchange] = useState([]);
   useEffect(()=>{
     populatedata()
   },[]);
@@ -34,6 +35,11 @@ export default function Perticulars() {
         }
       });
       onchangetabledata(holdtabledata);
+      let cashremaining = 0;
+      holdtabledata.forEach(element => {
+        cashremaining = cashremaining + parseInt(element.jama) - parseInt(element.karchu);
+      });
+      cashchange(cashremaining);
       let columndata = [
         {
         displayname: 'Name',
@@ -75,11 +81,24 @@ export default function Perticulars() {
  
   
   function datachanged(data,rowindex, columnname,value) {
-    onchangetabledata([...tabledata]);
+    let test = state;
+    test.perticularsdata = data;
+    setState(test);
+    let cashremaining = 0;
+    data.forEach(element => {
+      cashremaining = cashremaining +  parseInt(element.jama) - parseInt(element.karchu);
+    });
+    cashchange(cashremaining);
+    onchangetabledata([...data]);
   }
   async function submitdata() {
-    console.log("hiogdh");
-    await saveperticulars(tabledata).then((res)=>{
+    await saveperticulars(state.perticularsdata).then((res)=>{
+      console.log(res);
+    }).catch()
+    await savereadings(state.oildata).then((res)=>{
+      console.log(res);
+    }).catch()
+    await saveengineoils(state.engineoildata).then((res)=>{
       console.log(res);
     }).catch()
   }
@@ -94,11 +113,14 @@ export default function Perticulars() {
   return (
     <View>
     <Table tabledata = {tabledata} columns = {columns} datachanged = {datachanged}/>
+    <View>
+      <Text>Cash : {cashleft}</Text>
+    </View>
     <View style = {tablestyles.flexview}>
       <Button title="Addrow" onPress={addrow}/>
       <Button title="Removelastrow" onPress={removerow}/>
     </View>
-    <Button title="Submit" onPress={submitdata}/>
+      <Button title="Submit" onPress={submitdata}/>
     </View>
   );
   };

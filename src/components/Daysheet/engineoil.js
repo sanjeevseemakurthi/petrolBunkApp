@@ -95,6 +95,7 @@ function datachanged(data,rowindex, columnname,value) {
     amount = amount + parseInt(element.amount);
   });
   test.engineoilsales = amount;
+  test.engineoildata = tabledata;
   setState(test);
   onchangetabledata([...tabledata]);
 }
@@ -107,7 +108,6 @@ async function submitdata() {
     return (
       <View>
       <Table tabledata = {tabledata} columns = {columns} datachanged = {datachanged}/>
-      <Button title="Submit" onPress={submitdata}/>
       </View>
     );
 }

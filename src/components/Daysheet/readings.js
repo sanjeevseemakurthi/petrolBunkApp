@@ -99,14 +99,15 @@ export default function Readings() {
 ]);
 let finaldata;
 function datachanged(data,rowindex, columnname,value) {
-  data[rowindex].total =   data[rowindex].closing - data[rowindex].opening - data[rowindex].testing;
-  data[rowindex].amount =  data[rowindex].total * data[rowindex].price;
+  data[rowindex].netsale =   data[rowindex].closing - data[rowindex].opening - data[rowindex].testing;
+  data[rowindex].amount =  data[rowindex].netsale * data[rowindex].price;
   let amount = 0;
   let test = state
   data.forEach(element => {
     amount = amount + element.amount;
   });
   test.oilsales = amount;
+  test.oildata = tabledata;
   setState(test);
   onchangetabledata([...tabledata]);
 }
@@ -119,7 +120,6 @@ async function submitdata() {
     return (
       <View>
       <Table tabledata = {tabledata} columns = {columns} datachanged = {datachanged}/>
-      <Button title="Submit" onPress={submitdata}/>
       </View>
     );
 }
