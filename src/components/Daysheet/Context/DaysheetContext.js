@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const DaysheetContext = React.createContext([{}, () => {}]);
 
 const DaysheetProvider = (props) => {
-  const [oilsales, addoils] = useState({oilsales:0,engineoilsales:0,cash:0,oildata:[],engineoildata:[],perticularsdata:[]});
+  const [oilsales, addoils] = useState({oilsales:0,engineoilsales:0,cash:0,oildata:[],engineoildata:[],perticularsdata:[],savecounter:0});
   return (
     <DaysheetContext.Provider value={[oilsales, addoils]}>
       {props.children}

@@ -1,7 +1,7 @@
 import React, { useState,useEffect,useContext } from 'react';
 import { StyleSheet, Text, View,Button } from 'react-native';
 import Table from '../../shared/table';
-import { getaccounts, saveperticulars} from "../../services/sharedservices"
+import { getaccounts, saveperticulars} from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
 export default function Perticulars() {
   const [state, setState] = useContext(DaysheetContext);
@@ -82,32 +82,24 @@ export default function Perticulars() {
   
   function datachanged(data,rowindex, columnname,value) {
     let test = state;
-    test.perticularsdata = data;
+   
     setState(test);
     let cashremaining = 0;
     data.forEach(element => {
       cashremaining = cashremaining +  parseInt(element.jama) - parseInt(element.karchu);
     });
+    test.cash = cashremaining;
+    test.perticularsdata = data;
     cashchange(cashremaining);
     onchangetabledata([...data]);
-  }
-  async function submitdata() {
-    await saveperticulars(state.perticularsdata).then((res)=>{
-      console.log(res);
-    }).catch()
-    await savereadings(state.oildata).then((res)=>{
-      console.log(res);
-    }).catch()
-    await saveengineoils(state.engineoildata).then((res)=>{
-      console.log(res);
-    }).catch()
   }
   function addrow() {
     let newrow = {accountid:-1,discription:'',jama:0,karchu:0,date:  new Date()}
     onchangetabledata([...tabledata,newrow]);
   }
   function removerow() {
-    let data =tabledata.pop();
+    let data = tabledata;
+    let test = data.pop()
     onchangetabledata([...data]);
   }
   return (
@@ -120,7 +112,6 @@ export default function Perticulars() {
       <Button title="Addrow" onPress={addrow}/>
       <Button title="Removelastrow" onPress={removerow}/>
     </View>
-      <Button title="Submit" onPress={submitdata}/>
     </View>
   );
   };

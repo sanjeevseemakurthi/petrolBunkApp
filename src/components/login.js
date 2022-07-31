@@ -79,7 +79,10 @@ const styles = StyleSheet.create({
     },
     textform : {
       width: '70%',
-      margin: 10
+      margin: 10,
+      borderRadius: 10,
+      borderWidth:1,
+      padding:10
     }
 
   });

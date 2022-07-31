@@ -71,3 +71,6 @@ export function getaccounts() {
 export function saveperticulars(payload) {
     return axios.post(url + 'saveperticulars',payload)
 }
+export function checkreadings() {
+    return axios.get(url + 'checkreadings')
+}

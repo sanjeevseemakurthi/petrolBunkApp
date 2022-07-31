@@ -33,10 +33,21 @@ export default function Readings() {
         element.netsale = element.opening - element.closing - element.testing;
         element.amount =  element.netsale * element.price;
       });
+      initialchange(holddata);
       onchangetabledata(holddata);
     }).catch((err)=>{
       console.log(err)
     })
+  }
+  function initialchange(data) {
+    let amount = 0;
+    let test = state
+    data.forEach(element => {
+      amount = amount + element.amount;
+    });
+    test.oilsales = amount;
+    test.oildata = data;
+    setState(test);
   }
   let [tabledata, onchangetabledata] = useState([]);
   let [columns , onchangecolumns] = useState([

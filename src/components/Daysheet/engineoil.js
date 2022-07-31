@@ -7,6 +7,7 @@ import { DaysheetContext } from "./Context/DaysheetContext";
 
 export default function Engineoil() {
   const [state, setState] = useContext(DaysheetContext);
+  let [tabledata, onchangetabledata] = useState([]);
   let  formattedToday = "";
   console.log(state);
   useEffect(()=>{
@@ -29,12 +30,15 @@ export default function Engineoil() {
         }
         holddata.push(row);
       });
+      console.log(holddata);
+      initialcahnge(holddata);
       onchangetabledata(holddata);
+      
     }).catch((err)=>{
       console.log(err)
     })
   }
-  let [tabledata, onchangetabledata] = useState([]);
+  
   let [columns , onchangecolumns] = useState([
     {
     displayname: 'Name',
@@ -98,6 +102,17 @@ function datachanged(data,rowindex, columnname,value) {
   test.engineoildata = tabledata;
   setState(test);
   onchangetabledata([...tabledata]);
+}
+function initialcahnge(data) {
+  console.log("hi",tabledata);
+  let amount = 0;
+  let test = state
+  data.forEach(element => {
+    amount = amount + parseInt(element.amount);
+  });
+  test.engineoilsales = amount;
+  test.engineoildata = data;
+  setState(test);
 }
 async function submitdata() {
   console.log("hiogdh");
