@@ -2,7 +2,7 @@ import React, { useState,useEffect,useContext } from 'react';
 import { StyleSheet, Text, Button } from 'react-native';
 import { savereadings, saveperticulars,saveengineoils} from "../../services/sharedservices"
 import { DaysheetContext } from "./Context/DaysheetContext";
-export default function Confirmsubmission({params}) {
+export default function Confirmsubmission({navigation , route}) {
     const [state, setState] = useContext(DaysheetContext);
     async function submitdata() {
         await saveperticulars(state.perticularsdata).then((res)=>{
@@ -15,8 +15,8 @@ export default function Confirmsubmission({params}) {
           console.log(res);
         }).catch()
         state.savecounter = state.savecounter + 1;
-        console.log(params);
-        setState(state);
+        console.log(route.params);
+        route.params.navigating.navigate('Sucesspage');
       }
     return (
         <>

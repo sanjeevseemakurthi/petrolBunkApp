@@ -13,51 +13,53 @@ import { DaysheetContext } from "../components/Daysheet/Context/DaysheetContext"
 
 const Tab = createBottomTabNavigator();
 
-function MyTabs() {
-  const [allowacess, setscessforemployee] = useState(true);
-  const [state, setState] = useContext(DaysheetContext);
-  useEffect(()=>{
-    fetchacess()
-  },[]);
-  useEffect(()=>{
-    console.log("hi");
-  },[state])
-  async function fetchacess() {
-    await checkreadings().then(res=>{
-      setscessforemployee(res.data.Allowemployee);
-    })
-    .catch(err=>{
-      console.log(err);
-    })
-  }
+function MyTabs(params) {
   return (  
-    <>
-    <Text> {state.savecounter}</Text>
-    {
-      (allowacess) &&
       <Tab.Navigator>
         <Tab.Screen name="Readings" component={Readings} options={{headerShown: false}} />
         <Tab.Screen name="Engine oil" component={Engineoil} options={{headerShown: false}} />
         <Tab.Screen name="Perticulars" component={Perticulars} options={{headerShown: false}} />
-        <Tab.Screen name="submitdata" component={Confirmsubmission} options={{headerShown: false}} initialParams = {{setscessforemployee}}/>
+        <Tab.Screen name="submitdata" component={Confirmsubmission} options={{headerShown: false}} initialParams = {{ navigating : params.navigating }}/>
       </Tab.Navigator>
-    }
-    </>
-  
   );
 }
 
-export default function Daysheet() {
+export default function Daysheet({navigation}) {
+    const [allowacess, setscessforemployee] = useState(true);
+    useEffect(()=>{
+      const unsubscribe = navigation.addListener('focus', () => {
+        console.log("hi");
+        fetchacess()
+      });
+      return unsubscribe;
+    },[navigation])
+    async function fetchacess() {
+      await checkreadings().then(res=>{
+        setscessforemployee(res.data.Allowemployee);
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+    }
     return(
-      <DaysheetProvider>
-          <Navigation/>
-      </DaysheetProvider>
+      <>
+        { allowacess &&
+          <DaysheetProvider>
+            <Navigation navigating = {navigation}/>
+          </DaysheetProvider>
+        }
+        {
+          !allowacess &&
+          <Text> Data is already inserted</Text>
+        }
+      </>
+      
     )
 }
-function Navigation() {
+function Navigation(params) {
   return (
     <NavigationContainer independent={true}>
-      <MyTabs />
+      <MyTabs navigating = {params.navigating} />
     </NavigationContainer>
   );
 }
