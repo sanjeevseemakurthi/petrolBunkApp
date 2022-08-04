@@ -34,7 +34,7 @@ export default function Login(props) {
       }
       const data =  await Authenticateservice(payload).then((res)=>{
         AsyncStorage.setItem('Token', res.data.jwtToken);
-        console.log("sucess");
+        AsyncStorage.setItem('role', res.data.role);
         props.changestate(true);
       }).catch((err)=>{console.log(err)})
     }
