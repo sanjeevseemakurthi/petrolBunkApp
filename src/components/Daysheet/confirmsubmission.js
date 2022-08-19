@@ -6,16 +6,16 @@ export default function Confirmsubmission({navigation , route}) {
     const [state, setState] = useContext(DaysheetContext);
     async function submitdata() {
         await saveperticulars(state.perticularsdata).then((res)=>{
-          console.log(res);
+          
         }).catch()
         await savereadings(state.oildata).then((res)=>{
-          console.log(res);
+         
         }).catch()
         await saveengineoils(state.engineoildata).then((res)=>{
-          console.log(res);
+       
         }).catch()
         state.savecounter = state.savecounter + 1;
-        console.log(route.params);
+
         route.params.navigating.navigate('Sucesspage');
       }
     return (

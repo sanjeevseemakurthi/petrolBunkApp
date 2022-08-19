@@ -3,7 +3,7 @@ import { StyleSheet, Text, View,Button } from 'react-native';
 import Table from '../../shared/table';
 import { getaccounts, saveperticulars} from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
-export default function Perticulars() {
+export default function Perticulars({navigation , route}) {
   const [state, setState] = useContext(DaysheetContext);
   let [tabledata, onchangetabledata] = useState([]);
   let [columns , onchangecolumns] = useState([]);
@@ -73,9 +73,7 @@ export default function Perticulars() {
         },
     ];
       onchangecolumns(columndata);
-      console.log("hi");
     }).catch((err)=>{
-      console.log(err)
     })
   }
  

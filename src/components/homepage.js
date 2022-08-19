@@ -32,7 +32,6 @@ export default function Homepage() {
       });
       onchangetabledata(holddata);
     }).catch((err)=>{
-      console.log(err)
     })
   }
   let [tabledata, onchangetabledata] = useState([]);
@@ -101,9 +100,7 @@ function datachanged(data,rowindex, columnname,value) {
   onchangetabledata([...tabledata]);
 }
 async function submitdata() {
-  console.log("hiogdh");
   await savereadings(tabledata).then((res)=>{
-    console.log(res);
   }).catch()
 }
     return (

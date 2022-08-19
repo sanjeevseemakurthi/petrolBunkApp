@@ -36,7 +36,7 @@ export default function Login(props) {
         AsyncStorage.setItem('Token', res.data.jwtToken);
         AsyncStorage.setItem('role', res.data.role);
         props.changestate(true);
-      }).catch((err)=>{console.log(err)})
+      }).catch((err)=>{})
     }
 }
   

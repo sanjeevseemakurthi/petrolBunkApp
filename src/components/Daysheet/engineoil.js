@@ -5,11 +5,10 @@ import Table from "../../shared/table";
 import {getengineoils,saveengineoils} from "../../services/sharedservices"
 import { DaysheetContext } from "./Context/DaysheetContext";
 
-export default function Engineoil() {
+export default function Engineoil({navigation , route}) {
   const [state, setState] = useContext(DaysheetContext);
   let [tabledata, onchangetabledata] = useState([]);
   let  formattedToday = "";
-  console.log(state);
   useEffect(()=>{
     populatedata()
   },[]);
@@ -30,12 +29,10 @@ export default function Engineoil() {
         }
         holddata.push(row);
       });
-      console.log(holddata);
       initialcahnge(holddata);
       onchangetabledata(holddata);
       
     }).catch((err)=>{
-      console.log(err)
     })
   }
   
@@ -104,7 +101,6 @@ function datachanged(data,rowindex, columnname,value) {
   onchangetabledata([...tabledata]);
 }
 function initialcahnge(data) {
-  console.log("hi",tabledata);
   let amount = 0;
   let test = state
   data.forEach(element => {
@@ -115,9 +111,7 @@ function initialcahnge(data) {
   setState(test);
 }
 async function submitdata() {
-  console.log("hiogdh");
   await saveengineoils(tabledata).then((res)=>{
-    console.log(res);
   }).catch()
 }
     return (

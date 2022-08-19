@@ -5,18 +5,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Datepicker(props) {
   let days = []
-    let [dateselected, changedatestate] = useState(1);
-    let [monthselected, changemonthstate] = useState('Jan');
-    let [yearselected, changeyearsstate] = useState(2020);
+    let [dateselected, changedatestate] = useState(new Date().getDate());
+    let [monthselected, changemonthstate] = useState(new Date().getMonth()+1);
+    let [yearselected, changeyearsstate] = useState(new Date().getFullYear());
     const [isFocusdays, setIsFocusdays] = useState(false);
     const [isFocusmonths, setIsFocusmonths] = useState(false);
     const [isFocusyears, setIsFocusyears] = useState(false);
     let testmonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
     let months = [];
-    testmonths.forEach(element => {
+    testmonths.forEach((element,index) => {
       let row = {
         label: element,
-        value: element
+        value:(index)
       }
         months.push(row);
     });
@@ -37,13 +37,26 @@ export default function Datepicker(props) {
       days.push(row);
     }
     function daysInMonth (year, month) {
-      console.log(year,month,new Date(year, month, 0).getDate())
         return new Date(year, month, 0).getDate();
     }
     useEffect(()=>{
       props.datechanged(dateselected,monthselected,yearselected);
     },[dateselected,monthselected,yearselected]);
-    
+    useEffect(()=>{
+      if (props.date) {
+        changedatestate(props.date);
+      }
+    },[props.date]);
+    useEffect(()=>{
+      if(props.month) {
+        changemonthstate(props.month);
+      }
+    },[props.month]);
+    useEffect(()=>{
+      if(props.year) {
+        changeyearsstate(props.year);
+      }
+    },[props.year]);
     return (
         <>
         <View style = {styles.mainpannel}>
@@ -124,10 +137,12 @@ const styles = StyleSheet.create({
       alignContent: 'center', 
       alignItems:"center",
       borderColor:'smoke',
-      borderWidth:2, 
+      borderWidth:1, 
       alignSelf: 'flex-start',
       backgroundColor: 'white',
       borderRadius:10,
-      margin:2
+      margin:2,
+      padding:2,
+      paddingLeft: 5
     }
   })

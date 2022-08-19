@@ -21,7 +21,6 @@ axios.interceptors.request.use(
             return response;
           }, function (error) {
               if(error.response.status === 403) {
-                console.log("403 error")
                 sessionexpiredaleart();
                 return Promise.reject(error);
               } else {
@@ -37,11 +36,9 @@ function sessionexpiredaleart() {
       "please click ok to continue",
       [
         { text: "OK", onPress: ()=>{
-            console.log("hi");
         }}
       ]
     );
-    console.log("after")
 }
 
 export  function ComponentServices() {
@@ -53,8 +50,8 @@ export function Authenticateservice(payload) {
 export function sessioncheck() {
     return axios.get(url + 'sessioncheck')
 }
-export function getpumps() {
-    return axios.get(url + 'getpumps')
+export function getpumps(date) {
+    return axios.post(url + 'getpumps',date)
 }
 export function getengineoils() {
     return axios.get(url + 'getengineoils')

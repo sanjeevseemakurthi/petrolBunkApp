@@ -15,15 +15,11 @@ import Datepicker from '../shared/datepicker'
 const Tab = createBottomTabNavigator();
 
 function MyTabs(params) {
-  function datechanged(day,month,year) {
-    console.log(day,month,year);
-  }
   return (  <>
-              <Datepicker datechanged = {datechanged} ></Datepicker>
               <Tab.Navigator>
-              <Tab.Screen name="Readings" component={Readings} options={{headerShown: false}} />
-              <Tab.Screen name="Engine oil" component={Engineoil} options={{headerShown: false}} />
-              <Tab.Screen name="Perticulars" component={Perticulars} options={{headerShown: false}} />
+              <Tab.Screen name="Readings" component={Readings} options={{headerShown: false}} initialParams = {{ dateselected : params.dateselected }}/>
+              <Tab.Screen name="Engine oil" component={Engineoil} options={{headerShown: false}} initialParams = {{ dateselected : params.dateselected }}/>
+              <Tab.Screen name="Perticulars" component={Perticulars} options={{headerShown: false}} initialParams = {{ dateselected : params.dateselected }}/>
               <Tab.Screen name="submitdata" component={Confirmsubmission} options={{headerShown: false}} initialParams = {{ navigating : params.navigating }}/>
             </Tab.Navigator>
             </>
@@ -33,10 +29,12 @@ function MyTabs(params) {
 
 export default function Daysheet({navigation}) {
     const [allowacess, setscessforemployee] = useState(true);
+    const [refresh, refreshpage] = useState(true);
     const [role, setrole] = useState('');
+    let [date,updatedate] = useState(new Date());
+    let [resetdate,resetdateupdate] = useState(new Date());
     useEffect(()=>{
       const unsubscribe = navigation.addListener('focus', () => {
-        console.log("hi");
         fetchacess()
       });
       return unsubscribe;
@@ -47,31 +45,49 @@ export default function Daysheet({navigation}) {
         setscessforemployee(res.data.Allowemployee);
       })
       .catch(err=>{
-        console.log(err);
       })
       await AsyncStorage.getItem('role').then(value =>{
         setrole(value);
     });
     }
+    function datechanged(day,month,year) {
+      month = month + 1;
+      refreshpage(false);
+      let test = new Date(year+'-'+(month)+'-'+(day));
+      let currentate = new Date();
+      updatedate(test);
+      setTimeout(() => {
+        refreshpage(true);
+      }, 100);
+    }
     return(
-      <>
-        { (allowacess || role === 'admin') &&
-          <DaysheetProvider>
-            <Navigation navigating = {navigation}/>
-          </DaysheetProvider>
-        }
-        {
-          !(allowacess || role === 'admin') &&
-          <Text> Data is already inserted</Text>
-        }
-      </>
-      
+        <>
+           {(allowacess || role === 'admin') &&
+            <>
+                <Datepicker datechanged = {datechanged} day = {resetdate.getDate()} month ={resetdate.getMonth()}
+                year = {resetdate.getFullYear()}
+                ></Datepicker>
+                {
+                   refresh &&
+                  <>
+                    <DaysheetProvider>
+                    <Navigation navigating = {navigation} dateselected = {date} />
+                    </DaysheetProvider>
+                  </>
+                }
+            </>    
+           }
+           {
+            !(allowacess || role === 'admin') &&
+            <Text> Data is already inserted</Text>
+           }
+        </>
     )
 }
 function Navigation(params) {
   return (
     <NavigationContainer independent={true}>
-      <MyTabs navigating = {params.navigating} />
+      <MyTabs navigating = {params.navigating} dateselected = {params.dateselected}/>
     </NavigationContainer>
   );
 }

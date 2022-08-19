@@ -5,21 +5,31 @@ import Table from "../../shared/table";
 import {getpumps,savereadings} from "../../services/sharedservices"
 import { DaysheetContext } from "./Context/DaysheetContext";
 
-export default function Readings() {
+export default function Readings({navigation , route}) {
   const [state, setState] = useContext(DaysheetContext);
-  console.log(state);
+  const [refresh, refreshstate] = useState(true);
+  let date = route.params.dateselected
   useEffect(()=>{
     populatedata()
   },[]);
   async function populatedata() {
-    await getpumps().then((res)=>{
+    await getpumps(date).then((res)=>{
       let holddata =[];
+      if (res.alreadysaved && res.alreadysaved === true) {
+        refreshstate(false);
+        columns.forEach(ele=>{
+          ele.editable = false;
+        })
+      }
+      setTimeout(() => {
+        refreshstate(true);
+      }, 1000);
       res.data.data.forEach(element => {
         let row = {
           amount:0,
-          closing:0,
+          closing: element.latestclosedreading,
           netsale:0,
-          opening:element.latestclosedreading,
+          opening: res.alreadysaved ? element.latestopenreading : element.latestclosedreading,
           price:element.price,
           testing:5,
           pumpid: element.id,
@@ -36,7 +46,6 @@ export default function Readings() {
       initialchange(holddata);
       onchangetabledata(holddata);
     }).catch((err)=>{
-      console.log(err)
     })
   }
   function initialchange(data) {
@@ -50,7 +59,7 @@ export default function Readings() {
     setState(test);
   }
   let [tabledata, onchangetabledata] = useState([]);
-  let [columns , onchangecolumns] = useState([
+  let columns = [
     {
     displayname: 'Tank',
     actualname: 'tank',
@@ -107,7 +116,7 @@ export default function Readings() {
       width: 100,
       editable:true
     },
-]);
+];
 let finaldata;
 function datachanged(data,rowindex, columnname,value) {
   data[rowindex].netsale =   data[rowindex].closing - data[rowindex].opening - data[rowindex].testing;
@@ -123,14 +132,15 @@ function datachanged(data,rowindex, columnname,value) {
   onchangetabledata([...tabledata]);
 }
 async function submitdata() {
-  console.log("hiogdh");
   await savereadings(tabledata).then((res)=>{
-    console.log(res);
   }).catch()
 }
     return (
       <View>
-      <Table tabledata = {tabledata} columns = {columns} datachanged = {datachanged}/>
+      {
+        refresh && 
+        <Table tabledata = {tabledata} columns = {columns} datachanged = {datachanged}/>
+      }
       </View>
     );
 }
