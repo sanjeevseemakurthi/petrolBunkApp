@@ -10,7 +10,7 @@ import Confirmsubmission from './Daysheet/confirmsubmission';
 import { useState, useEffect,useContext } from "react";
 import {checkreadings } from "../services/sharedservices";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Datepicker from '../shared/datepicker'
+import DatePickerTest from '../shared/datepickertest'
 
 const Tab = createBottomTabNavigator();
 
@@ -31,8 +31,7 @@ export default function Daysheet({navigation}) {
     const [allowacess, setscessforemployee] = useState(true);
     const [refresh, refreshpage] = useState(true);
     const [role, setrole] = useState('');
-    let [date,updatedate] = useState(new Date());
-    let [resetdate,resetdateupdate] = useState(new Date());
+    let [date,updatedate] = useState({date:new Date().toISOString().split('T')[0]});
     useEffect(()=>{
       const unsubscribe = navigation.addListener('focus', () => {
         fetchacess()
@@ -50,11 +49,9 @@ export default function Daysheet({navigation}) {
         setrole(value);
     });
     }
-    function datechanged(day,month,year) {
-      month = month + 1;
+    function datechanged(date) {
       refreshpage(false);
-      let test = new Date(year+'-'+(month)+'-'+(day));
-      let currentate = new Date();
+      let test = date;
       updatedate(test);
       setTimeout(() => {
         refreshpage(true);
@@ -64,9 +61,7 @@ export default function Daysheet({navigation}) {
         <>
            {(allowacess || role === 'admin') &&
             <>
-                <Datepicker datechanged = {datechanged} day = {resetdate.getDate()} month ={resetdate.getMonth()}
-                year = {resetdate.getFullYear()}
-                ></Datepicker>
+                <DatePickerTest datechanged = {datechanged}></DatePickerTest>
                 {
                    refresh &&
                   <>

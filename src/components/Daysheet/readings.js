@@ -27,11 +27,11 @@ export default function Readings({navigation , route}) {
       res.data.data.forEach(element => {
         let row = {
           amount:0,
-          closing: element.latestclosedreading,
+          closing: element.latestclosedreading.toString(),
           netsale:0,
-          opening: res.alreadysaved ? element.latestopenreading : element.latestclosedreading,
-          price:element.price,
-          testing:5,
+          opening: res.alreadysaved ? element.latestopenreading.toString() : element.latestclosedreading.toString(),
+          price:element.price.toString(),
+          testing:(5).toString(),
           pumpid: element.id,
           product: element.product,
           tank: element.tank,
@@ -40,8 +40,8 @@ export default function Readings({navigation , route}) {
         holddata.push(row);
       });
       holddata.forEach(element => {
-        element.netsale = element.opening - element.closing - element.testing;
-        element.amount =  element.netsale * element.price;
+        element.netsale = (parseInt(element.opening) - parseInt(element.closing) - parseInt(element.testing)).toString();
+        element.amount =  (parseInt(element.netsale) * parseInt(element.price)).toString();
       });
       initialchange(holddata);
       onchangetabledata(holddata);
@@ -54,8 +54,8 @@ export default function Readings({navigation , route}) {
     data.forEach(element => {
       amount = amount + element.amount;
     });
-    test.oilsales = amount;
-    test.oildata = data;
+    test.oilsales = amount.toString();
+    test.oildata = data.toString();
     setState(test);
   }
   let [tabledata, onchangetabledata] = useState([]);
@@ -119,15 +119,15 @@ export default function Readings({navigation , route}) {
 ];
 let finaldata;
 function datachanged(data,rowindex, columnname,value) {
-  data[rowindex].netsale =   data[rowindex].closing - data[rowindex].opening - data[rowindex].testing;
-  data[rowindex].amount =  data[rowindex].netsale * data[rowindex].price;
+  data[rowindex].netsale = (parseInt(data[rowindex].closing) - parseInt(data[rowindex].opening) - parseInt(data[rowindex].testing)).toString();
+  data[rowindex].amount =  (parseInt(data[rowindex].netsale) * parseInt(data[rowindex].price)).toString();
   let amount = 0;
   let test = state
   data.forEach(element => {
     amount = amount + element.amount;
   });
-  test.oilsales = amount;
-  test.oildata = tabledata;
+  test.oilsales = amount.toString();
+  test.oildata = tabledata.toString();
   setState(test);
   onchangetabledata([...tabledata]);
 }

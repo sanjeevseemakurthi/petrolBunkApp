@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const url = 'http://localhost:8080/';
+const url = 'http://192.168.31.104:8080/';
 axios.interceptors.request.use(
     req=>{
             async function addheader() {
