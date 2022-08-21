@@ -1,7 +1,7 @@
 import React from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import { Text, View, Button } from 'react-native';
+import { Text, View, Button,StyleSheet } from 'react-native';
 import { useState } from 'react';
  
 export default function DatePickerTest(props) {
@@ -21,9 +21,9 @@ export default function DatePickerTest(props) {
     setShow(true);
   };
   return (
-    <View>
+    <View style= {datepicker.dateview}>
       <Button onPress={showDatepicker} title="Show date picker!" />
-      <Text>selected: {date.toISOString().split('T')[0]}</Text>
+      <Text style= {datepicker.textstyle}>selected: {date.toISOString().split('T')[0]}</Text>
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -31,8 +31,18 @@ export default function DatePickerTest(props) {
           mode={'date'}
           is24Hour={true}
           onChange={onChange}
+          maximumDate={new Date()}
         />
       )}
     </View>
   );
 };
+const datepicker = StyleSheet.create({
+  dateview : {
+    flexDirection: "row",  
+  },
+  textstyle : {
+    borderColor:'rgb(0, 0, 255)',
+    borderWidth:1
+  }
+})

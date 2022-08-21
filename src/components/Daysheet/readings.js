@@ -124,7 +124,7 @@ function datachanged(data,rowindex, columnname,value) {
   let amount = 0;
   let test = state
   data.forEach(element => {
-    amount = amount + element.amount;
+    amount = amount + parseInt(element.amount);
   });
   test.oilsales = amount.toString();
   test.oildata = tabledata.toString();

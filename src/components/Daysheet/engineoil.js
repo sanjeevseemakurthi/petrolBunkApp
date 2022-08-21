@@ -18,12 +18,12 @@ export default function Engineoil({navigation , route}) {
       res.data.data.forEach(element => {
         let row = {
              date :  new Date(),
-             qtyleft: element.qtyleft,
-             qtyinitial: element.qtyleft,
-             sales: 0,
-             Purchase: 0,
-             rate:0,
-             amount: 0,
+             qtyleft: element.qtyleft.toString(),
+             qtyinitial: element.qtyleft.toString(),
+             sales: (0).toString(),
+             Purchase: (0).toString(),
+             rate:(0).toString(),
+             amount: (0).toString(),
              eid: element.id,
              name:element.name
         }
@@ -89,13 +89,13 @@ export default function Engineoil({navigation , route}) {
 ]);
 let finaldata;
 function datachanged(data,rowindex, columnname,value) {
-  data[rowindex].qtyleft =   parseInt(data[rowindex].qtyinitial) - parseInt(data[rowindex].sales) + parseInt(data[rowindex].Purchase);
+  data[rowindex].qtyleft =  ( parseInt(data[rowindex].qtyinitial) - parseInt(data[rowindex].sales) + parseInt(data[rowindex].Purchase)).toString();
   let amount = 0;
   let test = state
   data.forEach(element => {
     amount = amount + parseInt(element.amount);
   });
-  test.engineoilsales = amount;
+  test.engineoilsales = amount.toString();
   test.engineoildata = tabledata;
   setState(test);
   onchangetabledata([...tabledata]);
