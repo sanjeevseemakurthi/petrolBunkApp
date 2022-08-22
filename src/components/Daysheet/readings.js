@@ -8,58 +8,9 @@ import { DaysheetContext } from "./Context/DaysheetContext";
 export default function Readings({navigation , route}) {
   const [state, setState] = useContext(DaysheetContext);
   const [refresh, refreshstate] = useState(true);
+  const [columns, changecolumns] = useState([true]);
   let date = route.params.dateselected
-  useEffect(()=>{
-    populatedata()
-  },[]);
-  async function populatedata() {
-    await getpumps(date).then((res)=>{
-      let holddata =[];
-      if (res.alreadysaved && res.alreadysaved === true) {
-        refreshstate(false);
-        columns.forEach(ele=>{
-          ele.editable = false;
-        })
-      }
-      setTimeout(() => {
-        refreshstate(true);
-      }, 1000);
-      res.data.data.forEach(element => {
-        let row = {
-          amount:0,
-          closing: element.latestclosedreading.toString(),
-          netsale:0,
-          opening: res.alreadysaved ? element.latestopenreading.toString() : element.latestclosedreading.toString(),
-          price:element.price.toString(),
-          testing:(5).toString(),
-          pumpid: element.id,
-          product: element.product,
-          tank: element.tank,
-          date : new Date()
-        }
-        holddata.push(row);
-      });
-      holddata.forEach(element => {
-        element.netsale = (parseInt(element.opening) - parseInt(element.closing) - parseInt(element.testing)).toString();
-        element.amount =  (parseInt(element.netsale) * parseInt(element.price)).toString();
-      });
-      initialchange(holddata);
-      onchangetabledata(holddata);
-    }).catch((err)=>{
-    })
-  }
-  function initialchange(data) {
-    let amount = 0;
-    let test = state
-    data.forEach(element => {
-      amount = amount + parseInt(element.amount);
-    });
-    test.oilsales = amount.toString();
-    test.oildata = data.toString();
-    setState(test);
-  }
-  let [tabledata, onchangetabledata] = useState([]);
-  let columns = [
+  let testcolumns = [
     {
     displayname: 'Tank',
     actualname: 'tank',
@@ -116,8 +67,61 @@ export default function Readings({navigation , route}) {
       width: 100,
       editable:true
     },
-];
-let finaldata;
+  ];
+  useEffect(()=>{
+    populatedata()
+  },[]);
+  async function populatedata() {
+    await getpumps(date).then((res)=>{
+      let holddata =[];
+      refreshstate(false);
+      let noneditablecols = [ 'tank', 'opening','product','netsale','price','amount'];
+      testcolumns.forEach(element => {
+        if (!noneditablecols.includes(element.actualname) && res.data.alreadysaved !== true) {
+          element.editable = true
+        } else {
+          element.editable = false
+        }
+      });
+      setTimeout(() => {
+        refreshstate(true);
+      }, 1000);
+      res.data.data.forEach(element => {
+        let row = {
+          amount:0,
+          closing: element.latestclosedreading.toString(),
+          netsale:0,
+          opening: res.alreadysaved ? element.latestopenreading.toString() : element.latestclosedreading.toString(),
+          price:element.price.toString(),
+          testing:(5).toString(),
+          pumpid: element.id,
+          product: element.product,
+          tank: element.tank,
+          date : new Date()
+        }
+        holddata.push(row);
+      });
+      holddata.forEach(element => {
+        element.netsale = (parseInt(element.opening) - parseInt(element.closing) - parseInt(element.testing)).toString();
+        element.amount =  (parseInt(element.netsale) * parseInt(element.price)).toString();
+      });
+      initialchange(holddata);
+      onchangetabledata(holddata);
+      changecolumns([...testcolumns]);
+    }).catch((err)=>{
+    })
+  }
+  function initialchange(data) {
+    let amount = 0;
+    let test = state
+    data.forEach(element => {
+      amount = amount + parseInt(element.amount);
+    });
+    test.oilsales = amount.toString();
+    test.oildata = data.toString();
+    setState(test);
+  }
+  let [tabledata, onchangetabledata] = useState([]);
 function datachanged(data,rowindex, columnname,value) {
   data[rowindex].netsale = (parseInt(data[rowindex].closing) - parseInt(data[rowindex].opening) - parseInt(data[rowindex].testing)).toString();
   data[rowindex].amount =  (parseInt(data[rowindex].netsale) * parseInt(data[rowindex].price)).toString();
