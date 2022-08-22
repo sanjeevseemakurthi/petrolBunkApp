@@ -9,8 +9,11 @@ export default function Perticulars({navigation , route}) {
   let [columns , onchangecolumns] = useState([]);
   let [cashleft , cashchange] = useState([]);
   useEffect(()=>{
-    populatedata()
-  },[]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      populatedata()
+    });
+    return unsubscribe;
+  },[navigation])
   async function populatedata() {
     await getaccounts().then((res)=>{
       let holddata =[];

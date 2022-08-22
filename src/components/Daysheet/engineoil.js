@@ -90,15 +90,8 @@ export default function Engineoil({navigation , route}) {
 let finaldata;
 function datachanged(data,rowindex, columnname,value) {
   data[rowindex].qtyleft =  ( parseInt(data[rowindex].qtyinitial) - parseInt(data[rowindex].sales) + parseInt(data[rowindex].Purchase)).toString();
-  let amount = 0;
-  let test = state
-  data.forEach(element => {
-    amount = amount + parseInt(element.amount);
-  });
-  test.engineoilsales = amount.toString();
-  test.engineoildata = tabledata;
-  setState(test);
   onchangetabledata([...tabledata]);
+  initialcahnge([...tabledata])
 }
 function initialcahnge(data) {
   let amount = 0;
