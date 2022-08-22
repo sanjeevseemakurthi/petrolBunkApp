@@ -52,7 +52,7 @@ export default function Readings({navigation , route}) {
     let amount = 0;
     let test = state
     data.forEach(element => {
-      amount = amount + element.amount;
+      amount = amount + parseInt(element.amount);
     });
     test.oilsales = amount.toString();
     test.oildata = data.toString();
@@ -130,10 +130,6 @@ function datachanged(data,rowindex, columnname,value) {
   test.oildata = tabledata.toString();
   setState(test);
   onchangetabledata([...tabledata]);
-}
-async function submitdata() {
-  await savereadings(tabledata).then((res)=>{
-  }).catch()
 }
     return (
       <View>

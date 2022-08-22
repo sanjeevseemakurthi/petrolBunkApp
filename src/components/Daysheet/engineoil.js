@@ -110,10 +110,6 @@ function initialcahnge(data) {
   test.engineoildata = data;
   setState(test);
 }
-async function submitdata() {
-  await saveengineoils(tabledata).then((res)=>{
-  }).catch()
-}
     return (
       <View>
       <Table tabledata = {tabledata} columns = {columns} datachanged = {datachanged}/>
