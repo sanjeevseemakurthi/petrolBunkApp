@@ -8,15 +8,46 @@ export default function Perticulars({navigation , route}) {
   let [tabledata, onchangetabledata] = useState([]);
   let [columns , onchangecolumns] = useState([]);
   let [cashleft , cashchange] = useState([]);
+  let [options , newoptions] = useState([]);
+  let holddata = [];
   useEffect(()=>{
-    const unsubscribe = navigation.addListener('focus', () => {
-      populatedata()
+      populatedata();
+  },[])
+  useEffect(()=>{
+    if(tabledata !== []) {
+      let chanedata = tabledata;
+      console.log(tabledata,holddata,options);
+      options.forEach(element => {
+        
+        if ( element.label === 'oilsales') {
+           let index = chanedata.findIndex((ele)=>{
+            if (ele.accountid === element.value) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+          chanedata[index].jama = state.oilsales;
+        }
+      if ( element.label === 'engineoilsales') {
+        let index = chanedata.findIndex((ele)=>{
+          if (ele.accountid === element.value) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        chanedata[index].jama = state.engineoilsales
+      }
     });
-    return unsubscribe;
-  },[navigation])
+    onchangetabledata([...chanedata]);
+    datachanged(tabledata,0,0,0)
+    }
+  },[state.oilsales,state.engineoilsales])    
+  
   async function populatedata() {
     await getaccounts().then((res)=>{
-      let holddata =[];
+      holddata =[];
       let holdtabledata = [];
       res.data.data.forEach(element => {
         let row = {
@@ -37,6 +68,7 @@ export default function Perticulars({navigation , route}) {
           holdtabledata.push(newrow);
         }
       });
+      newoptions(holddata);
       onchangetabledata(holdtabledata);
       let cashremaining = 0;
       holdtabledata.forEach(element => {
