@@ -14,6 +14,7 @@ export default function Tablecell(props) {
    
     return (
         <>
+        {props.eachcol.editable &&
            <TextInput
             style={[tablestyles.input,{width: props.eachcol.width}]}
             onChangeText = {changedata}
@@ -21,6 +22,13 @@ export default function Tablecell(props) {
             keyboardType = {props.eachcol.type}
             editable = {props.eachcol.editable} 
             />
+        }
+        {!props.eachcol.editable &&
+          <Text  style={[tablestyles.input,{width: props.eachcol.width}]}>
+            {eachcell}
+          </Text>
+        }
+
         </>
     );
 }
