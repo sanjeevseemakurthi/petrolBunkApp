@@ -53,8 +53,8 @@ export function sessioncheck() {
 export function getpumps(date) {
     return axios.post(url + 'getpumps',date)
 }
-export function getengineoils() {
-    return axios.get(url + 'getengineoils')
+export function getengineoils(date) {
+    return axios.post(url + 'getengineoils',date)
 }
 export function savereadings(payload) {
     return axios.post(url + 'savereadings',payload)

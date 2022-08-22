@@ -17,7 +17,7 @@ export default function Tablecelloption(props) {
         <>
             <View>
                 <Dropdown
-                style={[tablestyles.input,{width:props.eachcol.width}, isFocus && { borderColor: 'blue' }]}
+                style={[tablestyles.input,{width:props.eachcol.width, height: '50px'}, isFocus && { borderColor: 'blue' }]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}

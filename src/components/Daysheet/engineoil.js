@@ -8,35 +8,8 @@ import { DaysheetContext } from "./Context/DaysheetContext";
 export default function Engineoil({navigation , route}) {
   const [state, setState] = useContext(DaysheetContext);
   let [tabledata, onchangetabledata] = useState([]);
-  let  formattedToday = "";
-  useEffect(()=>{
-    populatedata()
-  },[]);
-  async function populatedata() {
-    await getengineoils().then((res)=>{
-      let holddata =[];
-      res.data.data.forEach(element => {
-        let row = {
-             date :  new Date(),
-             qtyleft: element.qtyleft.toString(),
-             qtyinitial: element.qtyleft.toString(),
-             sales: (0).toString(),
-             Purchase: (0).toString(),
-             rate:(0).toString(),
-             amount: (0).toString(),
-             eid: element.id,
-             name:element.name
-        }
-        holddata.push(row);
-      });
-      initialcahnge(holddata);
-      onchangetabledata(holddata);
-      
-    }).catch((err)=>{
-    })
-  }
-  
-  let [columns , onchangecolumns] = useState([
+  let [columns , onchangecolumns] = useState([])
+  let testcolumns = [
     {
     displayname: 'Name',
     actualname: 'name',
@@ -86,7 +59,44 @@ export default function Engineoil({navigation , route}) {
       width: 100,
       editable:true
     }
-]);
+];
+  let  formattedToday = "";
+  let date = route.params.dateselected
+  useEffect(()=>{
+    populatedata()
+  },[]);
+  async function populatedata() {
+    await getengineoils(date).then((res)=>{
+      let noneditablecols = [ 'name', 'qtyinitial','qtyleft'];
+      testcolumns.forEach(element => {
+        if (!noneditablecols.includes(element.actualname) && res.data.alreadysaved !== true) {
+          element.editable = true
+        } else {
+          element.editable = false
+        }
+      });
+      onchangecolumns(testcolumns);
+      let holddata =[];
+      res.data.data.forEach(element => {
+        let row = {
+             date :  new Date(),
+             qtyleft: element.qtyleft.toString(),
+             qtyinitial: element.qtyleft.toString(),
+             sales: (0).toString(),
+             Purchase: (0).toString(),
+             rate:(0).toString(),
+             amount: (0).toString(),
+             eid: element.id,
+             name:element.name
+        }
+        holddata.push(row);
+      });
+      initialcahnge(holddata);
+      onchangetabledata(holddata);
+      
+    }).catch((err)=>{
+    })
+  }
 let finaldata;
 function datachanged(data,rowindex, columnname,value) {
   data[rowindex].qtyleft =  ( parseInt(data[rowindex].qtyinitial) - parseInt(data[rowindex].sales) + parseInt(data[rowindex].Purchase)).toString();

@@ -37,6 +37,7 @@ const tablestyles = StyleSheet.create({
       borderWidth: 1,
       alignItems: "center",
       textAlign : "center",
-      padding: 10
+      padding: 10,
+      height: '50px'
     }
   })
