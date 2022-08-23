@@ -62,8 +62,8 @@ export function savereadings(payload) {
 export function saveengineoils(payload) {
     return axios.post(url+ 'saveengineoils',payload)
 }
-export function getaccounts() {
-    return axios.get(url + 'getaccounts')
+export function getaccounts(date) {
+    return axios.post(url + 'getaccounts',date)
 }
 export function saveperticulars(payload) {
     return axios.post(url + 'saveperticulars',payload)

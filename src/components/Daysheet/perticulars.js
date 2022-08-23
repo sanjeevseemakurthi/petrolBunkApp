@@ -10,13 +10,13 @@ export default function Perticulars({navigation , route}) {
   let [cashleft , cashchange] = useState([]);
   let [options , newoptions] = useState([]);
   let holddata = [];
+  let date = route.params.dateselected
   useEffect(()=>{
       populatedata();
   },[])
   useEffect(()=>{
     if(tabledata !== []) {
       let chanedata = tabledata;
-      console.log(tabledata,holddata,options);
       options.forEach(element => {
         
         if ( element.label === 'oilsales') {
@@ -44,11 +44,12 @@ export default function Perticulars({navigation , route}) {
     datachanged(tabledata,0,0,0)
     }
   },[state.oilsales,state.engineoilsales])    
-  
+  let cashindex = 0;
   async function populatedata() {
-    await getaccounts().then((res)=>{
+    await getaccounts(date).then((res)=>{
       holddata =[];
       let holdtabledata = [];
+      console.log("hi");
       res.data.data.forEach(element => {
         let row = {
           label: element.name,
@@ -56,20 +57,27 @@ export default function Perticulars({navigation , route}) {
         }
         holddata.push(row);
         if ( element.name === 'cash') {
-          let newrow = {accountid: element.id ,discription:'',jama:element.balance,karchu:0,date: new Date()}
+          cashindex = element.id;
+          let newrow = {accountid: element.id ,discription:'',jama:res.data.cash ,karchu:0,date: new Date(),roweditable: false}
           holdtabledata.push(newrow);
         }
         if ( element.name === 'oilsales') {
-          let newrow = {accountid: element.id ,discription:'',jama:state.oilsales,karchu:0,date: new Date()}
+          let newrow = {accountid: element.id ,discription:'',jama:state.oilsales,karchu:0,date: new Date(),roweditable:false}
           holdtabledata.push(newrow);
         }
         if ( element.name === 'engineoilsales') {
-          let newrow = {accountid: element.id ,discription:'',jama:state.engineoilsales,karchu:0,date: new Date()}
+          let newrow = {accountid: element.id ,discription:'',jama:state.engineoilsales,karchu:0,date: new Date(),roweditable:false}
           holdtabledata.push(newrow);
         }
       });
+      if (res.data.perticulars.length !== 0) {
+        holdtabledata = res.data.perticulars
+        let newrow = {accountid: cashindex ,discription:'',jama: res.data.cash,karchu:0,date: new Date(),roweditable: false}
+        holdtabledata.push(newrow);
+      }
       newoptions(holddata);
       onchangetabledata(holdtabledata);
+      datachanged(holdtabledata,0,0,0);
       let cashremaining = 0;
       holdtabledata.forEach(element => {
         cashremaining = cashremaining + parseInt(element.jama) - parseInt(element.karchu);
@@ -127,13 +135,17 @@ export default function Perticulars({navigation , route}) {
     onchangetabledata([...data]);
   }
   function addrow() {
-    let newrow = {accountid:-1,discription:'',jama:0,karchu:0,date:  new Date()}
+    let newrow = {accountid:-1,discription:'',jama:0,karchu:0,date:  new Date(), roweditable: true}
     onchangetabledata([...tabledata,newrow]);
   }
   function removerow() {
+    if (tabledata.length <= 3) {
+      return
+    }
     let data = tabledata;
     let test = data.pop()
     onchangetabledata([...data]);
+    datachanged(data,0,0,0)
   }
   return (
     <View>

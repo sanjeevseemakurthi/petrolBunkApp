@@ -22,6 +22,7 @@ export default function Tablecelloption(props) {
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
                 data={data}
+                disable = {!props.roweditable}
                 search
                 maxHeight={300}
                 labelField="label"

@@ -40,7 +40,7 @@ export default function Engineoil({navigation , route}) {
     },
     {
     displayname: 'Purchase',
-    actualname: 'Purchase',
+    actualname: 'purchase',
     type : 'numeric',
     width: 100,
     editable:true
@@ -83,7 +83,7 @@ export default function Engineoil({navigation , route}) {
              qtyleft: element.qtyleft.toString(),
              qtyinitial: element.qtyleft.toString(),
              sales: (0).toString(),
-             Purchase: (0).toString(),
+             purchase: (0).toString(),
              rate:(0).toString(),
              amount: (0).toString(),
              eid: element.id,

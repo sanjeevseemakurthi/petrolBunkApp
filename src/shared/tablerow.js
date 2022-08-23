@@ -10,10 +10,10 @@ export default function Tablerow(props) {
                     props.columns.map((eachcol,dataindex)=> 
                     <View  key={'data'+ props.rowindex+dataindex} >
                      {eachcol.showselection === undefined  ?
-                      <Tablecell celldata = {props.rowdata[eachcol.actualname]} eachcol = {eachcol} changingtabledata = {props.changingtabledata}  rowindex = {props.rowindex}/>
+                      <Tablecell celldata = {props.rowdata[eachcol.actualname]} eachcol = {eachcol} changingtabledata = {props.changingtabledata}  rowindex = {props.rowindex} roweditable = {(props.rowdata.roweditable !== undefined) ? props.rowdata.roweditable : true}/>
                       :
                       <Tablecelloption key={'data'+ props.rowindex+dataindex} celldata = {props.rowdata[eachcol.actualname]} eachcol = {eachcol} changingtabledata = {props.changingtabledata}  
-                      rowindex = {props.rowindex} optiondata = {eachcol.optiondata} />
+                      rowindex = {props.rowindex} optiondata = {eachcol.optiondata} roweditable = {(props.rowdata.roweditable !== undefined) ? props.rowdata.roweditable : true}/>
                     }
                     </View>
                    

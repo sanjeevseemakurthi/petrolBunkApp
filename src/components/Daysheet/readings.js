@@ -118,7 +118,7 @@ export default function Readings({navigation , route}) {
       amount = amount + parseInt(element.amount);
     });
     test.oilsales = amount.toString();
-    test.oildata = data.toString();
+    test.oildata = data;
     setState(test);
   }
   let [tabledata, onchangetabledata] = useState([]);
@@ -131,7 +131,7 @@ function datachanged(data,rowindex, columnname,value) {
     amount = amount + parseInt(element.amount);
   });
   test.oilsales = amount.toString();
-  test.oildata = tabledata.toString();
+  test.oildata = tabledata;
   setState(test);
   onchangetabledata([...tabledata]);
 }
