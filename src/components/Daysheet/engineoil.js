@@ -78,16 +78,21 @@ export default function Engineoil({navigation , route}) {
       onchangecolumns(testcolumns);
       let holddata =[];
       res.data.data.forEach(element => {
+        let existdata = undefined
+        if (res.data.alreadysaved) {
+          let testexistdata = res.data.engineoils.findIndex(eachoils=>{ if(eachoils.eid === element.id) return true; else false});
+          existdata = res.data.engineoils[testexistdata];
+        }
         let row = {
-             date :  new Date(),
-             qtyleft: element.qtyleft.toString(),
-             qtyinitial: element.qtyleft.toString(),
-             sales: (0).toString(),
-             purchase: (0).toString(),
-             rate:(0).toString(),
-             amount: (0).toString(),
-             eid: element.id,
-             name:element.name
+             date       : new Date(),
+             qtyleft    : existdata ? existdata.qtyleft.toString() : element.qtyleft.toString(),
+             qtyinitial : existdata ? (existdata.qtyleft + existdata.sales - existdata.purchase ) :element.qtyleft.toString(),
+             sales      : existdata ? existdata.sales.toString() : '0',
+             purchase   : existdata ? existdata.purchase.toString() :'0',
+             rate       : existdata ? existdata.rate.toString() : '0',
+             amount     : existdata ? existdata.amount.toString(): '0',
+             eid        : element.id,
+             name       : element.name
         }
         holddata.push(row);
       });
@@ -99,7 +104,7 @@ export default function Engineoil({navigation , route}) {
   }
 let finaldata;
 function datachanged(data,rowindex, columnname,value) {
-  data[rowindex].qtyleft =  ( parseInt(data[rowindex].qtyinitial) - parseInt(data[rowindex].sales) + parseInt(data[rowindex].Purchase)).toString();
+  data[rowindex].qtyleft =  ( parseInt(data[rowindex].qtyinitial) - parseInt(data[rowindex].sales) + parseInt(data[rowindex].purchase)).toString();
   onchangetabledata([...tabledata]);
   initialcahnge([...tabledata])
 }

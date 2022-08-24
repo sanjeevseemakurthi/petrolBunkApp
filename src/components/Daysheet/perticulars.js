@@ -44,7 +44,9 @@ export default function Perticulars({navigation , route}) {
     datachanged(tabledata,0,0,0)
     }
   },[state.oilsales,state.engineoilsales])    
-  let cashindex = 0;
+  let cashindex = -1;
+  let oilindex = -1;
+  let engineoilindex = -1;
   async function populatedata() {
     await getaccounts(date).then((res)=>{
       holddata =[];
@@ -62,10 +64,12 @@ export default function Perticulars({navigation , route}) {
           holdtabledata.push(newrow);
         }
         if ( element.name === 'oilsales') {
+          oilindex = element.id
           let newrow = {accountid: element.id ,discription:'',jama:state.oilsales,karchu:0,date: new Date(),roweditable:false}
           holdtabledata.push(newrow);
         }
         if ( element.name === 'engineoilsales') {
+          engineoilindex = element.id;
           let newrow = {accountid: element.id ,discription:'',jama:state.engineoilsales,karchu:0,date: new Date(),roweditable:false}
           holdtabledata.push(newrow);
         }
@@ -73,6 +77,11 @@ export default function Perticulars({navigation , route}) {
       if (res.data.perticulars.length !== 0) {
         holdtabledata = res.data.perticulars
         let newrow = {accountid: cashindex ,discription:'',jama: res.data.cash,karchu:0,date: new Date(),roweditable: false}
+        debugger
+        let toilindex = holdtabledata.findIndex(ele=>{if(ele.accountid === oilindex)return true; else false})
+        holdtabledata[toilindex].roweditable = false;
+        let tengineoilindex = holdtabledata.findIndex(ele=>{if(ele.accountid === engineoilindex)return true; else false})
+        holdtabledata[tengineoilindex].roweditable = false;
         holdtabledata.push(newrow);
       }
       newoptions(holddata);

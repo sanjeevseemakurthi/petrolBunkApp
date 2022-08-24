@@ -87,22 +87,27 @@ export default function Readings({navigation , route}) {
         refreshstate(true);
       }, 1000);
       res.data.data.forEach(element => {
+        let existdata = undefined
+        if (res.data.alreadysaved) {
+          let testexistdata = res.data.readings.findIndex(eachreading=>{ if(eachreading.pumpid === element.id) return true; else false});
+          existdata = res.data.readings[testexistdata];
+        }
         let row = {
-          amount:0,
-          closing: element.latestclosedreading.toString(),
-          netsale:0,
-          opening: res.alreadysaved ? element.latestopenreading.toString() : element.latestclosedreading.toString(),
-          price:element.price.toString(),
-          testing:(5).toString(),
-          pumpid: element.id,
-          product: element.product,
-          tank: element.tank,
-          date : new Date()
+          amount  : '0',
+          closing : existdata ? existdata.closing.toString()  : '0',
+          netsale : '0',
+          opening : existdata ? existdata.opening.toString() : element.latestclosedreading.toString(),
+          price   : existdata ? existdata.price.toString() :element.price.toString(),
+          testing : existdata ? existdata.testing.toString(): '5',
+          pumpid  : element.id,
+          product : element.product,
+          tank    : element.tank,
+          date    : new Date()
         }
         holddata.push(row);
       });
       holddata.forEach(element => {
-        element.netsale = (parseInt(element.opening) - parseInt(element.closing) - parseInt(element.testing)).toString();
+        element.netsale = (-parseInt(element.opening) + parseInt(element.closing) - parseInt(element.testing)).toString();
         element.amount =  (parseInt(element.netsale) * parseInt(element.price)).toString();
       });
       initialchange(holddata);
