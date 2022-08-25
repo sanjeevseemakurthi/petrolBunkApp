@@ -94,7 +94,7 @@ export default function Readings({navigation , route}) {
         }
         let row = {
           amount  : '0',
-          closing : existdata ? existdata.closing.toString()  : '0',
+          closing : existdata ? existdata.closing.toString()  : element.latestclosedreading.toString(),
           netsale : '0',
           opening : existdata ? existdata.opening.toString() : element.latestclosedreading.toString(),
           price   : existdata ? existdata.price.toString() :element.price.toString(),

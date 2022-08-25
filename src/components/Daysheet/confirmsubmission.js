@@ -20,8 +20,6 @@ export default function Confirmsubmission({navigation , route}) {
             }).catch()
         }
         state.savecounter = state.savecounter + 1;
-
-        route.params.navigating.navigate('Sucesspage');
       }
     return (
         <>

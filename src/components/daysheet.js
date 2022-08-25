@@ -20,7 +20,7 @@ function MyTabs(params) {
               <Tab.Screen name="Readings" component={Readings} options={{headerShown: false}} initialParams = {{ dateselected : params.dateselected }}/>
               <Tab.Screen name="Engine oil" component={Engineoil} options={{headerShown: false}} initialParams = {{ dateselected : params.dateselected }}/>
               <Tab.Screen name="Perticulars" component={Perticulars} options={{headerShown: false}} initialParams = {{ dateselected : params.dateselected }}/>
-              <Tab.Screen name="submitdata" component={Confirmsubmission} options={{headerShown: false}} initialParams = {{ navigating : params.navigating , dateselected : params.dateselected  }}/>
+              <Tab.Screen name="submitdata" component={Confirmsubmission} options={{headerShown: false}} initialParams = {{  dateselected : params.dateselected  }}/>
             </Tab.Navigator>
             </>
       
