@@ -4,15 +4,12 @@ import { savereadings, saveperticulars,saveengineoils} from "../../services/shar
 import { DaysheetContext } from "./Context/DaysheetContext";
 export default function Confirmsubmission({navigation , route}) {
     let date = route.params.dateselected;
-    let todaysdate = new Date().toISOString().split('T')[0]
-    console.log(date);
+    let todaysdate = new Date().toISOString().split('T')[0];
     const [state, setState] = useContext(DaysheetContext);
     async function submitdata() {
-        console.log(date.date === todaysdate)
         await saveperticulars({date:date.date,data:state.perticularsdata}).then((res)=>{
           
         }).catch()
-        console.log(state.oildata,state.engineoildata);
         if (date.date === todaysdate) {
             await savereadings(state.oildata).then((res)=>{
             }).catch()

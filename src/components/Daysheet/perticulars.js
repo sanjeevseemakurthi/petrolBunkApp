@@ -51,7 +51,6 @@ export default function Perticulars({navigation , route}) {
     await getaccounts(date).then((res)=>{
       holddata =[];
       let holdtabledata = [];
-      console.log("hi");
       res.data.data.forEach(element => {
         let row = {
           label: element.name,

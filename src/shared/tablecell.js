@@ -38,6 +38,6 @@ const tablestyles = StyleSheet.create({
       alignItems: "center",
       textAlign : "center",
       padding: 10,
-      height: '50px'
+      height: 50
     }
   })
