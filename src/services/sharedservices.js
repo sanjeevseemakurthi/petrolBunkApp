@@ -71,3 +71,9 @@ export function saveperticulars(payload) {
 export function checkreadings() {
     return axios.get(url + 'checkreadings')
 }
+
+
+// for home page
+export function getcallibrationdetails() {
+    return axios.get(url + 'getcallibration')
+}

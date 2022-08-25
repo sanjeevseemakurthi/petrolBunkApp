@@ -9,10 +9,10 @@ export default function Routing() {
   return (
     <>
       <Drawer.Navigator>
-        <Drawer.Screen name="Homepage" component={Homepage} />
-        <Drawer.Screen name="Logout" component={Logout} />
+        <Drawer.Screen name="Home" component={Homepage} />
         <Drawer.Screen name='Daysheet' component={Daysheet} />
-        <Drawer.Screen name='Sucesspage' component={Sucesspage} />
+        <Drawer.Screen name='Sucesspage' component={Sucesspage}  options={{ drawerItemStyle: { display: 'none' } }} />
+        <Drawer.Screen name="Logout" component={Logout}  options={{ drawerItemStyle: { display: 'none' } }}/>
       </Drawer.Navigator>
     </>
   );

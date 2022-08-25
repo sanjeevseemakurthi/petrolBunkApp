@@ -1,13 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Text, View, Button,StyleSheet } from 'react-native';
 import { useState } from 'react';
  
 export default function DatePickerTest(props) {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(props.initaldate ? props.initaldate : new Date());
   const [show, setShow] = useState(false);
-
   const onChange = (event, selectedDate) => {
     if (date.toISOString().split('T')[0] !== selectedDate.toISOString().split('T')[0]) {
     const currentDate = selectedDate;
@@ -22,7 +21,7 @@ export default function DatePickerTest(props) {
   };
   return (
     <View style= {datepicker.dateview}>
-      <Button onPress={showDatepicker} title="Show date picker!" />
+      <Button onPress={showDatepicker} title= {props.buttontitle ? props.buttontitle : "Change Date"}/>
       <Text style= {datepicker.textstyle}>selected: {date.toISOString().split('T')[0]}</Text>
       {show && (
         <DateTimePicker
@@ -43,6 +42,7 @@ const datepicker = StyleSheet.create({
   },
   textstyle : {
     borderColor:'rgb(0, 0, 255)',
-    borderWidth:1
+    borderWidth:1,
+    padding:10,
   }
 })
