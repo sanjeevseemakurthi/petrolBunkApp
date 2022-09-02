@@ -8,6 +8,7 @@ export default function Perticulardetails({navigation,route}) {
 
   const [filterdata, filterdatarefresh] = useState([]);
   const [actualdata, actualdatarefresh] = useState([]);
+  const [pertucalardetails, pertucalardetailschange] = useState([]);
   const [filtersumjama, changefiltersumjama] = useState(0);
   const [filtersumkarchu, changefiltersumkarchu] = useState(0);
 
@@ -21,22 +22,25 @@ export default function Perticulardetails({navigation,route}) {
     console.log(route.params.id)
     await getpericulardetails({id: route.params.id}).then(res=>{ 
       actualdatarefresh(res.data.data);
-      filterbydate();
+      pertucalardetailschange(res.data.accinfo);
+      setTimeout(() => {
+        filterbydate(res.data.data); 
+      }, 100);
     }).catch(err=>{});
   }
   function initaldatechanged(date) {
         date1 = new Date(date.data.spli('-'));
-        filterbydate();
+        filterbydate(actualdata);
   }
   function finaldatechanged(date) {
         date2 = new Date(date.data.spli('-'));
-        filterbydate();
+        filterbydate(actualdata);
   }
-  function filterbydate() {
+  function filterbydate(datatofilter) {
     let jama = 0;
     let karchu = 0;
-    let data = actualdata.filter(res=>{
-        if (res.date < date2 && res.data > date1) 
+    let data = datatofilter.filter(res=>{
+        if (new Date(res.date.split('-')) < date2 && new Date(res.date.split('-')) > date1) 
         { jama = jama + res.jama;
          karchu = karchu + res.karchu;
          return true;
@@ -49,24 +53,25 @@ export default function Perticulardetails({navigation,route}) {
   return (
     <>
     <View style = {{flexDirection : 'row',marginTop:10 ,justifyContent:"space-evenly"}}>
+        <Button title="Back" onPress={()=>{navigation.push('Accounts')}}></Button>
         <DatePickerTest datechanged = {initaldatechanged} buttontitle = "satrt Date" initaldate = {date1}></DatePickerTest>
         <DatePickerTest datechanged = {finaldatechanged} buttontitle = "End Date " initaldate = {date2}></DatePickerTest>
     </View>
     {
-     actualdata.map((data,index)=> 
+     filterdata .map((data,index)=> 
      <View key={'data'+index}>
-          <Banner  discription = {data.discription} nextdate ={data.nextdate} />
+          <Banner  discription = {data} accouninfo = {pertucalardetails}/>
      </View>
      )}
     </>
   );
 }
 
-function Banner(params) {
-  
+function Banner(test) {
+  let params = test.discription;
     return(
       <View style = {{flexDirection : 'row', padding: 10, margin:10, borderWidth:1,justifyContent:"space-evenly"}}>
-      <Text> {params.name}</Text>
+      <Text> {test.accouninfo}</Text>
       <Text> {params.jama}</Text>
       <Text>{ params.karchu }</Text>
       </View>
