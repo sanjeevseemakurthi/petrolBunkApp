@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const url = 'http://192.168.0.7:8080/';
+const url = 'http://3.110.197.152:8080/';
 axios.interceptors.request.use(
     req=>{
             async function addheader() {
@@ -76,4 +76,12 @@ export function checkreadings() {
 // for home page
 export function getcallibrationdetails() {
     return axios.get(url + 'getcallibration')
+}
+
+// for perticulars
+export function getonlyaccounts() {
+    return axios.get(url + 'getaccountsonly')
+}
+export function getpericulardetails(data) {
+    return axios.post(url+'getpericulardetails',data)
 }
