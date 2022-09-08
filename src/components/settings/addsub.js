@@ -25,7 +25,7 @@ export default function Addsub({ navigation, route }) {
   let [refresh, changerefresh] = useState(false);
   let [selectedrow, changeselectedrow] = useState({});
   let [modalVisible, setModalVisible] = useState(false);
-  let adjustwidth = Math.floor(Dimensions.get("window").width / 6);
+  let [adjustwidth, onchangewidth] = useState(30);
   useEffect(() => {
     populatedata();
   }, []);
@@ -35,9 +35,12 @@ export default function Addsub({ navigation, route }) {
         changecolumn([...res.data.columNames]);
         changetabledata([...res.data.data]);
         columnchangeeditable([...res.data.editable]);
-        adjustwidth = Math.floor(
-          Dimensions.get("window").width / res.data.columNames.length
+        let testwidth = Math.floor(
+          (Dimensions.get("window").width - 10) /
+            (res.data.columNames.length + 1)
         );
+        onchangewidth(parseInt(testwidth));
+        console.log(adjustwidth);
         changerefresh(true);
       })
       .catch();
@@ -81,13 +84,15 @@ export default function Addsub({ navigation, route }) {
       .catch();
   }
   return (
-    <>
-      <Button
-        title="Add New Row"
-        onPress={() => {
-          setModalVisible(true);
-        }}
-      ></Button>
+    <View style={{ margin: 5 }}>
+      <View style={{ width: 200, left: "50%", padding: 10 }}>
+        <Button
+          title="Add New Row"
+          onPress={() => {
+            setModalVisible(true);
+          }}
+        ></Button>
+      </View>
       {refresh && (
         <ScrollView horizontal={true}>
           <ScrollView>
@@ -102,11 +107,14 @@ export default function Addsub({ navigation, route }) {
               {column.map((eachcol, colindex) => (
                 <Text
                   key={colindex}
-                  style={[tablestyles.input, { width: 150 }]}
+                  style={[tablestyles.input, { width: adjustwidth }]}
                 >
                   {eachcol}
                 </Text>
               ))}
+              <Text style={[tablestyles.input, { width: adjustwidth }]}>
+                Action
+              </Text>
             </View>
             {tabledata.map((eachrow, rowindex) => (
               <View key={rowindex}>
@@ -121,19 +129,21 @@ export default function Addsub({ navigation, route }) {
                   {column.map((eachcol, colindex) => (
                     <Text
                       key={colindex}
-                      style={[tablestyles.input, { width: 150 }]}
+                      style={[tablestyles.input, { width: adjustwidth }]}
                     >
                       {eachrow[eachcol]}
                     </Text>
                   ))}
-                  <Button
-                    title="edit"
-                    onPress={() => editrow(eachrow)}
-                  ></Button>
-                  <Button
-                    title="delete"
-                    onPress={() => deletedata(eachrow)}
-                  ></Button>
+                  <View style={{ width: adjustwidth, flexDirection: "row" }}>
+                    <Button
+                      title="edit"
+                      onPress={() => editrow(eachrow)}
+                    ></Button>
+                    <Button
+                      title="delete"
+                      onPress={() => deletedata(eachrow)}
+                    ></Button>
+                  </View>
                 </View>
               </View>
             ))}
@@ -175,7 +185,7 @@ export default function Addsub({ navigation, route }) {
           </View>
         </Modal>
       </View>
-    </>
+    </View>
   );
 }
 function Eachtext(textprops) {
@@ -186,13 +196,19 @@ function Eachtext(textprops) {
     console.log();
     date = new Date(j[0], j[1] - 1, j[2] + 1);
   }
+  if (textprops.type === "Date" && textprops.eachtext === "") {
+    textprops.textchange(
+      textprops.editablecol,
+      new Date().toISOString().split("T")[0]
+    );
+  }
   function changedata(value) {
     onchangetext(value);
     if (textprops.type === "Text") {
       textprops.textchange(textprops.editablecol, value);
     }
     if (textprops.type === "Number") {
-      textprops.textchange(textprops.editablecol, parseInt(value));
+      textprops.textchange(textprops.editablecol, parseFloat(value));
     }
   }
   function initaldatechanged(date) {
@@ -204,28 +220,31 @@ function Eachtext(textprops) {
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
+          width: Dimensions.get("window").width - 150,
         }}
       >
-        <Text style={{ margin: 10 }}>{textprops.editablecol}</Text>
-        {textprops.type !== "Date" && (
-          <TextInput
-            value={text}
-            onChangeText={changedata}
-            style={{
-              borderColor: "blue",
-              borderWidth: 2,
-              margin: 10,
-              borderRadius: 2,
-            }}
-          ></TextInput>
-        )}
-        {textprops.type === "Date" && (
-          <DatePickerTest
-            datechanged={initaldatechanged}
-            buttontitle="satrt Date"
-            initaldate={date}
-          ></DatePickerTest>
-        )}
+        <Text style={{ width: 100 }}>{textprops.editablecol}</Text>
+        <View>
+          {textprops.type !== "Date" && (
+            <TextInput
+              value={text}
+              onChangeText={changedata}
+              style={{
+                borderColor: "blue",
+                borderWidth: 2,
+                margin: 10,
+                borderRadius: 2,
+              }}
+            ></TextInput>
+          )}
+          {textprops.type === "Date" && (
+            <DatePickerTest
+              datechanged={initaldatechanged}
+              buttontitle=" "
+              initaldate={date}
+            ></DatePickerTest>
+          )}
+        </View>
       </View>
     </>
   );

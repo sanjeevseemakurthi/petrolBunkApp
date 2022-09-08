@@ -6,7 +6,15 @@ import { sub } from "react-native-reanimated";
 export default function Addmain({ navigation, route }) {
   return (
     <>
-      <View style={[{ flexDirection: "row" }]}>
+      <View
+        style={[
+          {
+            flexDirection: "row",
+            justifyContent: "space-around",
+            padding: 10,
+          },
+        ]}
+      >
         <Button
           onPress={() =>
             Changeroute(
@@ -15,6 +23,7 @@ export default function Addmain({ navigation, route }) {
               "deletecalibration"
             )
           }
+          style={datepicker.Buttonstyle}
           title="Calibration"
           color="#511be3"
         />
@@ -58,3 +67,14 @@ export default function Addmain({ navigation, route }) {
     });
   }
 }
+const datepicker = StyleSheet.create({
+  Buttonstyle: {
+    padding: 10,
+    margin: 10,
+  },
+  textstyle: {
+    borderColor: "rgb(0, 0, 255)",
+    borderWidth: 1,
+    padding: 10,
+  },
+});

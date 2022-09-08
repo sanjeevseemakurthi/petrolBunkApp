@@ -39,18 +39,26 @@ export default function Listofaccounts({ navigation, route }) {
     onchangetabledata([...filterdata]);
   }
   return (
-    <>
+    <View style={{ margin: 10 }}>
       <TextInput
         style={{
           backgroundColor: "rgb(255,255,255)",
           borderWidth: 1,
-          margin: 2,
+          marginBottom: 5,
           padding: 2,
+          paddingLeft: 10,
+          width: 200,
         }}
         onChangeText={changsearch}
         placeholder="serach"
         value={searchtext}
       />
+      <View
+        style={[listofaccountstyle.pressablestylest, { borderTopWidth: 1 }]}
+      >
+        <Text> Name </Text>
+        <Text> Balance</Text>
+      </View>
       <ScrollView>
         {tabledata.map((data, index) => (
           <Pressable
@@ -61,21 +69,22 @@ export default function Listofaccounts({ navigation, route }) {
             key={data.id + "detailed"}
           >
             <Text> {data.name} </Text>
-            <Text> {data.balance} </Text>
+            <Text> {data.balance ? data.balance : 0} </Text>
           </Pressable>
         ))}
       </ScrollView>
-    </>
+    </View>
   );
 }
 const listofaccountstyle = StyleSheet.create({
   pressablestylest: {
-    borderWidth: 1,
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
     flexDirection: "row",
     alignItems: "center",
     textAlign: "center",
     height: 50,
-    margin: 2,
     justifyContent: "space-evenly",
   },
 });

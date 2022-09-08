@@ -68,12 +68,12 @@ export default function Perticulardetails({ navigation, route }) {
         ></Button>
         <DatePickerTest
           datechanged={initaldatechanged}
-          buttontitle="satrt Date"
+          buttontitle="satrt Date :"
           initaldate={date1}
         ></DatePickerTest>
         <DatePickerTest
           datechanged={finaldatechanged}
-          buttontitle="End Date "
+          buttontitle="End Date :"
           initaldate={date2}
         ></DatePickerTest>
       </View>
