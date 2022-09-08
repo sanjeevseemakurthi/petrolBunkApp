@@ -1,87 +1,92 @@
-import axios from 'axios';
+import axios from "axios";
 import { Alert } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const url = 'http://3.110.197.152:8080/';
-axios.interceptors.request.use(
-    req=>{
-            async function addheader() {
-                let headre;
-                if(!req.url.includes('authenticate')) {
-                    await AsyncStorage.getItem('Token').then(value =>{
-                            headre = value
-                        });
-                        req.headers.Authorization = 'Bearer '+ headre;
-                }
-                return req;
-            }
-            return addheader();
-        })
-        axios.interceptors.response.use(function (response) {
-            return response;
-          }, function (error) {
-              if(error.response.status === 403) {
-                sessionexpiredaleart();
-                return Promise.reject(error);
-              } else {
-                return Promise.reject(error);
-              }
-           
-          });
+const url = "http://192.168.0.7:8080/";
+axios.interceptors.request.use((req) => {
+  async function addheader() {
+    let headre;
+    if (!req.url.includes("authenticate")) {
+      await AsyncStorage.getItem("Token").then((value) => {
+        headre = value;
+      });
+      req.headers.Authorization = "Bearer " + headre;
+    }
+    return req;
+  }
+  return addheader();
+});
+axios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    if (error.response.status === 403) {
+      sessionexpiredaleart();
+      return Promise.reject(error);
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
 
-
-function sessionexpiredaleart() { 
-    Alert.alert(
-      "Session Expires",
-      "please click ok to continue",
-      [
-        { text: "OK", onPress: ()=>{
-        }}
-      ]
-    );
+function sessionexpiredaleart() {
+  Alert.alert("Session Expires", "please click ok to continue", [
+    { text: "OK", onPress: () => {} },
+  ]);
 }
 
-export  function ComponentServices() {
-    return  axios.get(url + 'test')
+export function ComponentServices() {
+  return axios.get(url + "test");
 }
 export function Authenticateservice(payload) {
-    return axios.post(url + 'authenticate',payload)
+  return axios.post(url + "authenticate", payload);
 }
 export function sessioncheck() {
-    return axios.get(url + 'sessioncheck')
+  return axios.get(url + "sessioncheck");
 }
 export function getpumps(date) {
-    return axios.post(url + 'getpumps',date)
+  return axios.post(url + "getpumps", date);
 }
 export function getengineoils(date) {
-    return axios.post(url + 'getengineoils',date)
+  return axios.post(url + "getengineoils", date);
 }
 export function savereadings(payload) {
-    return axios.post(url + 'savereadings',payload)
+  return axios.post(url + "savereadings", payload);
 }
 export function saveengineoils(payload) {
-    return axios.post(url+ 'saveengineoils',payload)
+  return axios.post(url + "saveengineoils", payload);
 }
 export function getaccounts(date) {
-    return axios.post(url + 'getaccounts',date)
+  return axios.post(url + "getaccounts", date);
 }
 export function saveperticulars(payload) {
-    return axios.post(url + 'saveperticulars',payload)
+  return axios.post(url + "saveperticulars", payload);
 }
 export function checkreadings() {
-    return axios.get(url + 'checkreadings')
+  return axios.get(url + "checkreadings");
 }
-
 
 // for home page
 export function getcallibrationdetails() {
-    return axios.get(url + 'getcallibration')
+  return axios.get(url + "getcallibration");
 }
 
 // for perticulars
 export function getonlyaccounts() {
-    return axios.get(url + 'getaccountsonly')
+  return axios.get(url + "getaccountsonly");
 }
 export function getpericulardetails(data) {
-    return axios.post(url+'getpericulardetails',data)
+  return axios.post(url + "getpericulardetails", data);
+}
+
+// for settings
+export function geteditdetails(suburl) {
+  return axios.get(url + suburl);
+}
+export function savedetails(suburl, payload) {
+  return axios.post(url + suburl, payload);
+}
+export function deletedetails(suburl, payload) {
+  return axios.post(url + suburl, payload);
 }

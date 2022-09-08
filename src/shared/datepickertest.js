@@ -21,8 +21,7 @@ export default function DatePickerTest(props) {
   };
   return (
     <View style= {datepicker.dateview}>
-      <Button onPress={showDatepicker} title= {props.buttontitle ? props.buttontitle : "Change Date"}/>
-      <Text style= {datepicker.textstyle}>selected: {date.toISOString().split('T')[0]}</Text>
+      <Button onPress={showDatepicker} title= {(props.buttontitle ? props.buttontitle : "") + date.toISOString().split('T')[0]}/> 
       {show && (
         <DateTimePicker
           testID="dateTimePicker"

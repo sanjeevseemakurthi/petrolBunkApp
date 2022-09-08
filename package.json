@@ -31,7 +31,7 @@
     "react-data-table-component": "^7.5.2",
     "react-devtools-core": "~4.25.0",
     "react-dom": "18.0.0",
-    "react-native": "0.69.4",
+    "react-native": "0.69.5",
     "react-native-base64": "^0.2.1",
     "react-native-dialog": "^9.2.1",
     "react-native-element-dropdown": "^2.0.0",

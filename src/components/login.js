@@ -14,9 +14,9 @@ export default function Login(props) {
                 <Text style = {styles.textheader}>Wlcome to VFS!</Text>
               </View>
               <View style={styles.childviewtwo}>
-                <TextInput variant="standard" label="username" style = {styles.textform} onChangeText={onchangeusername} value = {username} />
+                <TextInput variant="standard" label="username" style = {styles.textform} onChangeText={onchangeusername} value = {username} placeholder = "username"/>
                 <TextInput variant="standard" label="Password" secureTextEntry={true} style = {styles.textform} 
-                 onChangeText={onChangepassword} value = {password} />
+                 onChangeText={onChangepassword} value = {password} placeholder = "password" />
                 <Button
                     onPress={() =>submitted()}
                     title="Submit"
