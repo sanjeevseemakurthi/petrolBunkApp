@@ -104,7 +104,12 @@ export default function Daysheet({ navigation }) {
     <>
       {(allowacess || role === "admin") && (
         <>
-          <DatePickerTest datechanged={datechanged}></DatePickerTest>
+          <View style={{ margin: 10 }}>
+            <DatePickerTest
+              datechanged={datechanged}
+              buttontitle="Click Me : "
+            ></DatePickerTest>
+          </View>
           {refresh && (
             <>
               <DaysheetProvider>
