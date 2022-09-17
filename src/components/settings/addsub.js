@@ -11,7 +11,7 @@ import {
   Alert,
   Dimensions,
 } from "react-native";
-import DatePickerTest from "../../shared/datepickertest";
+import Eachtext from "../../shared/eachTextedit";
 import {
   geteditdetails,
   savedetails,
@@ -39,7 +39,7 @@ export default function Addsub({ navigation, route }) {
           (Dimensions.get("window").width - 10) /
             (res.data.columNames.length + 1)
         );
-        onchangewidth(parseInt(testwidth));
+        onchangewidth(parseFloat(testwidth));
         console.log(adjustwidth);
         changerefresh(true);
       })
@@ -52,6 +52,7 @@ export default function Addsub({ navigation, route }) {
     changeselectedrow(row);
   }
   function editrow(row) {
+    console.log(row);
     changeselectedrow(row);
     setModalVisible(true);
   }
@@ -166,7 +167,7 @@ export default function Addsub({ navigation, route }) {
                 <Eachtext
                   eachtext={
                     selectedrow[eacheditable.name]
-                      ? selectedrow[eacheditable.name]
+                      ? selectedrow[eacheditable.name].toString()
                       : ""
                   }
                   type={eacheditable.type}
@@ -188,67 +189,7 @@ export default function Addsub({ navigation, route }) {
     </View>
   );
 }
-function Eachtext(textprops) {
-  let [text, onchangetext] = useState(textprops.eachtext);
-  let date = new Date();
-  if (textprops.type === "Date" && textprops.eachtext !== "") {
-    let j = text.split("-").map((data) => parseInt(data, 10));
-    console.log();
-    date = new Date(j[0], j[1] - 1, j[2] + 1);
-  }
-  if (textprops.type === "Date" && textprops.eachtext === "") {
-    textprops.textchange(
-      textprops.editablecol,
-      new Date().toISOString().split("T")[0]
-    );
-  }
-  function changedata(value) {
-    onchangetext(value);
-    if (textprops.type === "Text") {
-      textprops.textchange(textprops.editablecol, value);
-    }
-    if (textprops.type === "Number") {
-      textprops.textchange(textprops.editablecol, parseFloat(value));
-    }
-  }
-  function initaldatechanged(date) {
-    textprops.textchange(textprops.editablecol, date.date);
-  }
-  return (
-    <>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: Dimensions.get("window").width - 150,
-        }}
-      >
-        <Text style={{ width: 100 }}>{textprops.editablecol}</Text>
-        <View>
-          {textprops.type !== "Date" && (
-            <TextInput
-              value={text}
-              onChangeText={changedata}
-              style={{
-                borderColor: "blue",
-                borderWidth: 2,
-                margin: 10,
-                borderRadius: 2,
-              }}
-            ></TextInput>
-          )}
-          {textprops.type === "Date" && (
-            <DatePickerTest
-              datechanged={initaldatechanged}
-              buttontitle=" "
-              initaldate={date}
-            ></DatePickerTest>
-          )}
-        </View>
-      </View>
-    </>
-  );
-}
+
 const tablestyles = StyleSheet.create({
   input: {
     alignItems: "center",

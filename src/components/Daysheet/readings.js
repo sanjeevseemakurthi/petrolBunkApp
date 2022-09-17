@@ -135,12 +135,12 @@ export default function Readings({ navigation, route }) {
         });
         holddata.forEach((element) => {
           element.netsale = (
-            -parseInt(element.opening) +
-            parseInt(element.closing) -
-            parseInt(element.testing)
+            -parseFloat(element.opening) +
+            parseFloat(element.closing) -
+            parseFloat(element.testing)
           ).toString();
           element.amount = (
-            parseInt(element.netsale) * parseInt(element.price)
+            parseFloat(element.netsale) * parseFloat(element.price)
           ).toString();
         });
         initialchange(holddata);
@@ -153,7 +153,7 @@ export default function Readings({ navigation, route }) {
     let amount = 0;
     let test = state;
     data.forEach((element) => {
-      amount = amount + parseInt(element.amount);
+      amount = amount + parseFloat(element.amount);
     });
     test.oilsales = amount.toString();
     test.oildata = data;
@@ -162,17 +162,17 @@ export default function Readings({ navigation, route }) {
   let [tabledata, onchangetabledata] = useState([]);
   function datachanged(data, rowindex, columnname, value) {
     data[rowindex].netsale = (
-      parseInt(data[rowindex].closing) -
-      parseInt(data[rowindex].opening) -
-      parseInt(data[rowindex].testing)
+      parseFloat(data[rowindex].closing) -
+      parseFloat(data[rowindex].opening) -
+      parseFloat(data[rowindex].testing)
     ).toString();
     data[rowindex].amount = (
-      parseInt(data[rowindex].netsale) * parseInt(data[rowindex].price)
+      parseFloat(data[rowindex].netsale) * parseFloat(data[rowindex].price)
     ).toString();
     let amount = 0;
     let test = state;
     data.forEach((element) => {
-      amount = amount + parseInt(element.amount);
+      amount = amount + parseFloat(element.amount);
     });
     test.oilsales = amount.toString();
     test.oildata = tabledata;

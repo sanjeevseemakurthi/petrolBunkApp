@@ -21,7 +21,7 @@ export default function Engineoil({ navigation, route }) {
       displayname: "Name",
       actualname: "name",
       type: "sentences",
-      width: 60,
+      width: 160,
       editable: false,
     },
     {
@@ -122,9 +122,9 @@ export default function Engineoil({ navigation, route }) {
   let finaldata;
   function datachanged(data, rowindex, columnname, value) {
     data[rowindex].qtyleft = (
-      parseInt(data[rowindex].qtyinitial) -
-      parseInt(data[rowindex].sales) +
-      parseInt(data[rowindex].purchase)
+      parseFloat(data[rowindex].qtyinitial) -
+      parseFloat(data[rowindex].sales) +
+      parseFloat(data[rowindex].purchase)
     ).toString();
     onchangetabledata([...tabledata]);
     initialcahnge([...tabledata]);
@@ -133,7 +133,7 @@ export default function Engineoil({ navigation, route }) {
     let amount = 0;
     let test = state;
     data.forEach((element) => {
-      amount = amount + parseInt(element.amount);
+      amount = amount + parseFloat(element.amount);
     });
     test.engineoilsales = amount;
     test.engineoildata = data;

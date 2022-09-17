@@ -108,6 +108,7 @@ export default function Daysheet({ navigation }) {
             <DatePickerTest
               datechanged={datechanged}
               buttontitle="Click Me : "
+              maxdate={true}
             ></DatePickerTest>
           </View>
           {refresh && (

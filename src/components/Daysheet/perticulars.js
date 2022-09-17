@@ -123,7 +123,9 @@ export default function Perticulars({ navigation, route }) {
         let cashremaining = 0;
         holdtabledata.forEach((element) => {
           cashremaining =
-            cashremaining + parseInt(element.jama) - parseInt(element.karchu);
+            cashremaining +
+            parseFloat(element.jama) -
+            parseFloat(element.karchu);
         });
         cashchange(cashremaining);
         let columndata = [
@@ -170,7 +172,7 @@ export default function Perticulars({ navigation, route }) {
     let cashremaining = 0;
     data.forEach((element) => {
       cashremaining =
-        cashremaining + parseInt(element.jama) - parseInt(element.karchu);
+        cashremaining + parseFloat(element.jama) - parseFloat(element.karchu);
     });
     test.cash = cashremaining;
     test.perticularsdata = data;
