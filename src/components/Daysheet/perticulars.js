@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 import Table from "../../shared/table";
 import { getaccounts, saveperticulars } from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
@@ -11,6 +11,8 @@ export default function Perticulars({ navigation, route }) {
   let [options, newoptions] = useState([]);
   let holddata = [];
   let date = route.params.dateselected;
+  let selecteddate = new Date(date.date.split("-"));
+  selecteddate.setDate(selecteddate.getDate() + 1);
   useEffect(() => {
     populatedata();
   }, []);
@@ -64,7 +66,7 @@ export default function Perticulars({ navigation, route }) {
               discription: "",
               jama: res.data.cash,
               karchu: 0,
-              date: new Date(),
+              date: selecteddate,
               roweditable: false,
             };
             holdtabledata.push(newrow);
@@ -76,7 +78,7 @@ export default function Perticulars({ navigation, route }) {
               discription: "",
               jama: state.oilsales,
               karchu: 0,
-              date: new Date(),
+              date: selecteddate,
               roweditable: false,
             };
             holdtabledata.push(newrow);
@@ -88,7 +90,7 @@ export default function Perticulars({ navigation, route }) {
               discription: "",
               jama: state.engineoilsales,
               karchu: 0,
-              date: new Date(),
+              date: selecteddate,
               roweditable: false,
             };
             holdtabledata.push(newrow);
@@ -101,7 +103,7 @@ export default function Perticulars({ navigation, route }) {
             discription: "",
             jama: res.data.cash,
             karchu: 0,
-            date: new Date(),
+            date: selecteddate,
             roweditable: false,
           };
           debugger;
@@ -185,7 +187,7 @@ export default function Perticulars({ navigation, route }) {
       discription: "",
       jama: 0,
       karchu: 0,
-      date: new Date(),
+      date: selecteddate,
       roweditable: true,
     };
     onchangetabledata([...tabledata, newrow]);
@@ -200,7 +202,7 @@ export default function Perticulars({ navigation, route }) {
     datachanged(data, 0, 0, 0);
   }
   return (
-    <View style={{ margin: 10 }}>
+    <ScrollView style={{ margin: 10 }}>
       <Table
         tabledata={tabledata}
         columns={columns}
@@ -213,7 +215,7 @@ export default function Perticulars({ navigation, route }) {
         <Button title="Addrow" onPress={addrow} />
         <Button title="Removelastrow" onPress={removerow} />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

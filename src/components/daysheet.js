@@ -72,9 +72,12 @@ export default function Daysheet({ navigation }) {
   const [allowacess, setscessforemployee] = useState(true);
   const [refresh, refreshpage] = useState(true);
   const [role, setrole] = useState("");
+  const date2 = new Date();
+  date2.setDate(date2.getDate() - 1);
   let [date, updatedate] = useState({
-    date: new Date().toISOString().split("T")[0],
+    date: date2.toISOString().split("T")[0],
   });
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       fetchacess();
@@ -109,6 +112,7 @@ export default function Daysheet({ navigation }) {
               datechanged={datechanged}
               buttontitle="Click Me : "
               maxdate={true}
+              initaldate={date2}
             ></DatePickerTest>
           </View>
           {refresh && (

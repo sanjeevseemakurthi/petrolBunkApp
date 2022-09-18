@@ -69,6 +69,8 @@ export default function Engineoil({ navigation, route }) {
   ];
   let formattedToday = "";
   let date = route.params.dateselected;
+  let selecteddate = new Date(date.date.split("-"));
+  selecteddate.setDate(selecteddate.getDate() + 1);
   useEffect(() => {
     populatedata();
   }, []);
@@ -98,7 +100,7 @@ export default function Engineoil({ navigation, route }) {
             existdata = res.data.engineoils[testexistdata];
           }
           let row = {
-            date: new Date(),
+            date: selecteddate,
             qtyleft: existdata
               ? existdata.qtyleft.toString()
               : element.qtyleft.toString(),
@@ -140,13 +142,13 @@ export default function Engineoil({ navigation, route }) {
     setState(test);
   }
   return (
-    <View style={{ margin: 10 }}>
+    <ScrollView style={{ margin: 10 }}>
       <Table
         tabledata={tabledata}
         columns={columns}
         datachanged={datachanged}
       />
-    </View>
+    </ScrollView>
   );
 }
 const tablestyles = StyleSheet.create({

@@ -39,7 +39,7 @@ export default function Addsub({ navigation, route }) {
           (Dimensions.get("window").width - 10) /
             (res.data.columNames.length + 1)
         );
-        onchangewidth(parseFloat(testwidth));
+        onchangewidth(parseInt(testwidth));
         console.log(adjustwidth);
         changerefresh(true);
       })

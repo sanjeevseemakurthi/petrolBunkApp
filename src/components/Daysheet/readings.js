@@ -17,6 +17,7 @@ export default function Readings({ navigation, route }) {
   const [refresh, refreshstate] = useState(true);
   const [columns, changecolumns] = useState([true]);
   let date = route.params.dateselected;
+  let selecteddate = date.date;
   let testcolumns = [
     {
       displayname: "Tank",
@@ -129,7 +130,7 @@ export default function Readings({ navigation, route }) {
             pumpid: element.id,
             product: element.product,
             tank: element.tank,
-            date: new Date(),
+            date: selecteddate,
           };
           holddata.push(row);
         });
@@ -180,7 +181,7 @@ export default function Readings({ navigation, route }) {
     onchangetabledata([...tabledata]);
   }
   return (
-    <View style={{ margin: 10 }}>
+    <ScrollView style={{ margin: 10 }}>
       {refresh && (
         <Table
           tabledata={tabledata}
@@ -188,7 +189,7 @@ export default function Readings({ navigation, route }) {
           datachanged={datachanged}
         />
       )}
-    </View>
+    </ScrollView>
   );
 }
 const tablestyles = StyleSheet.create({

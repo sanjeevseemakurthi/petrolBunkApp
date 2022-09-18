@@ -8,13 +8,14 @@ import {
 import { DaysheetContext } from "./Context/DaysheetContext";
 export default function Confirmsubmission({ navigation, route }) {
   let date = route.params.dateselected;
-  let todaysdate = new Date().toISOString().split("T")[0];
+  let todaysdate = new Date();
+  todaysdate.setDate(todaysdate.getDate() - 1);
   const [state, setState] = useContext(DaysheetContext);
   async function submitdata() {
     await saveperticulars({ date: date.date, data: state.perticularsdata })
       .then((res) => {})
       .catch();
-    if (date.date === todaysdate) {
+    if (date.date === todaysdate.toISOString().split("T")[0]) {
       await savereadings(state.oildata)
         .then((res) => {})
         .catch();
