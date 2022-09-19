@@ -142,7 +142,9 @@ export default function Readings({ navigation, route }) {
           ).toString();
           element.amount = (
             parseFloat(element.netsale) * parseFloat(element.price)
-          ).toString();
+          )
+            .toFixed(2)
+            .toString();
         });
         initialchange(holddata);
         onchangetabledata(holddata);
@@ -169,7 +171,9 @@ export default function Readings({ navigation, route }) {
     ).toString();
     data[rowindex].amount = (
       parseFloat(data[rowindex].netsale) * parseFloat(data[rowindex].price)
-    ).toString();
+    )
+      .toFixed(2)
+      .toString();
     let amount = 0;
     let test = state;
     data.forEach((element) => {
