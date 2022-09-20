@@ -11,7 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Tablecell(props) {
   useEffect(() => {
-    onchangecell(props.celldata);
+    onchangecell(props.celldata.toString());
   }, [props.celldata]);
   let [eachcell, onchangecell] = useState(props.celldata.toString());
   function changedata(value) {

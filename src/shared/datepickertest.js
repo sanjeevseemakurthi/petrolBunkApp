@@ -1,17 +1,31 @@
 import React, { useEffect } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-import { Text, View, Button, StyleSheet } from "react-native";
+import {
+  Text,
+  TextInput,
+  View,
+  Button,
+  StyleSheet,
+  Platform,
+} from "react-native";
 import { useState } from "react";
 
 export default function DatePickerTest(props) {
   const [date, setDate] = useState(
     props.initaldate ? props.initaldate : new Date()
   );
+  const iswindows = Platform.OS === "web";
   const [show, setShow] = useState(false);
+  const [datetext, chnagedatetext] = useState(
+    props.initaldate
+      ? props.initaldate.toISOString().split("T")[0]
+      : new Date().toISOString().split("T")[0]
+  );
   const [maxdate, changemaxdate] = useState(
     props.maxdate ? new Date() : new Date().setDate(new Date().getDate() + 365)
   );
+
   const onChange = (event, selectedDate) => {
     if (
       date.toISOString().split("T")[0] !==
@@ -29,13 +43,26 @@ export default function DatePickerTest(props) {
   }
   return (
     <View style={datepicker.dateview}>
-      <Button
-        onPress={showDatepicker}
-        title={
-          (props.buttontitle ? props.buttontitle : "") +
-          date.toISOString().split("T")[0]
-        }
-      />
+      {!iswindows && (
+        <Button
+          onPress={showDatepicker}
+          title={
+            (props.buttontitle ? props.buttontitle : "") +
+            date.toISOString().split("T")[0]
+          }
+        />
+      )}
+      {iswindows && (
+        <View>
+          <TextInput value={datetext} onChangeText={chnagedatetext}></TextInput>
+          <Button
+            title="pressme"
+            onPress={() => {
+              props.datechanged({ date: datetext });
+            }}
+          ></Button>
+        </View>
+      )}
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
