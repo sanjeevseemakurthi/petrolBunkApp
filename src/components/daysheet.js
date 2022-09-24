@@ -75,11 +75,7 @@ function MyTabs(params) {
   );
 }
 export default function Daysheet({ navigation }) {
-  return (
-    <DaysheetProvider>
-      <Daysheetsub navigation={navigation}></Daysheetsub>
-    </DaysheetProvider>
-  );
+  return <Daysheetsub navigation={navigation}></Daysheetsub>;
 }
 
 function Daysheetsub(params) {

@@ -7,11 +7,7 @@ import { DaysheetProvider } from "../components/Daysheet/Context/DaysheetContext
 const Stack = createStackNavigator();
 
 export default function Balance() {
-  return (
-    <DaysheetProvider>
-      <Navigation />
-    </DaysheetProvider>
-  );
+  return <Navigation />;
 }
 function Navigation() {
   return (

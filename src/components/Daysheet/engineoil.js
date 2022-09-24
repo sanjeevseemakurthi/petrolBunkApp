@@ -13,9 +13,25 @@ import { getengineoils, saveengineoils } from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
 
 export default function Engineoil({ navigation, route }) {
-  const [state, setState] = useContext(DaysheetContext);
+  let [state, setState] = useContext(DaysheetContext);
   let [tabledata, onchangetabledata] = useState([]);
   let [columns, onchangecolumns] = useState([]);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      refresh();
+    });
+    return unsubscribe;
+  }, [navigation, state.needrefresh]);
+  async function refresh() {
+    console.log("hi");
+    debugger;
+    let index = state.needrefresh.indexOf("getenginoilforedit");
+    if (index !== -1) {
+      state.needrefresh.splice(index, 1);
+      setState(state);
+      populatedata();
+    }
+  }
   let testcolumns = [
     {
       displayname: "Name",

@@ -5,9 +5,10 @@ import Daysheet from "../components/daysheet";
 import Sucesspage from "../components/sucesspage";
 import Balance from "../components/Balance";
 import Settings from "../components/settings";
+import { DaysheetProvider } from "../components/Daysheet/Context/DaysheetContext";
 const Drawer = createDrawerNavigator();
 
-export default function Routing() {
+function Subrouting() {
   return (
     <>
       <Drawer.Navigator>
@@ -22,5 +23,12 @@ export default function Routing() {
         />
       </Drawer.Navigator>
     </>
+  );
+}
+export default function Routing() {
+  return (
+    <DaysheetProvider>
+      <Subrouting></Subrouting>
+    </DaysheetProvider>
   );
 }

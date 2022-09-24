@@ -29,8 +29,10 @@ export default function Addsub({ navigation, route }) {
   let [adjustwidth, onchangewidth] = useState(30);
   const [state, setState] = useContext(DaysheetContext);
   let holdstate = state;
-  if (!state.needrefresh.includes(route.params.suburl)) {
-    state.needrefresh.push(route.params.suburl);
+  if (!holdstate.needrefresh.includes(route.params.suburl)) {
+    holdstate.needrefresh.push(route.params.suburl);
+    debugger;
+    setState(holdstate);
   }
 
   useEffect(() => {
