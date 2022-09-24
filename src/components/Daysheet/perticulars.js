@@ -106,7 +106,6 @@ export default function Perticulars({ navigation, route }) {
             date: selecteddate,
             roweditable: false,
           };
-          debugger;
           let toilindex = holdtabledata.findIndex((ele) => {
             if (ele.accountid === oilindex) return true;
             else false;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import {
   Alert,
   Dimensions,
 } from "react-native";
+import { DaysheetContext } from "../Daysheet/Context/DaysheetContext";
 import Eachtext from "../../shared/eachTextedit";
 import {
   geteditdetails,
@@ -26,6 +27,12 @@ export default function Addsub({ navigation, route }) {
   let [selectedrow, changeselectedrow] = useState({});
   let [modalVisible, setModalVisible] = useState(false);
   let [adjustwidth, onchangewidth] = useState(30);
+  const [state, setState] = useContext(DaysheetContext);
+  let holdstate = state;
+  if (!state.needrefresh.includes(route.params.suburl)) {
+    state.needrefresh.push(route.params.suburl);
+  }
+
   useEffect(() => {
     populatedata();
   }, []);

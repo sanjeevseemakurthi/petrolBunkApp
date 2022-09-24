@@ -12,6 +12,7 @@ import { checkreadings } from "../services/sharedservices";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DatePickerTest from "../shared/datepickertest";
 import Icon from "react-native-vector-icons/AntDesign";
+import { DaysheetContext } from "./Daysheet/Context/DaysheetContext";
 
 const Tab = createBottomTabNavigator();
 
@@ -54,24 +55,39 @@ function MyTabs(params) {
         />
         <Tab.Screen
           name="submitdata"
-          component={Confirmsubmission}
+          component={() => {
+            return (
+              <Confirmsubmission
+                dateselected={params.dateselected}
+                parentnavigation={params.navigating}
+              />
+            );
+          }}
           options={{
             headerShown: false,
             tabBarIcon: () => {
               return <Icon name="check" size={20} color="#009" />;
             },
           }}
-          initialParams={{ dateselected: params.dateselected }}
         />
       </Tab.Navigator>
     </>
   );
 }
-
 export default function Daysheet({ navigation }) {
+  return (
+    <DaysheetProvider>
+      <Daysheetsub navigation={navigation}></Daysheetsub>
+    </DaysheetProvider>
+  );
+}
+
+function Daysheetsub(params) {
+  navigation = params.navigation;
   const [allowacess, setscessforemployee] = useState(true);
   const [refresh, refreshpage] = useState(true);
   const [role, setrole] = useState("");
+  const [state, setState] = useContext(DaysheetContext);
   const date2 = new Date();
   date2.setDate(date2.getDate() - 1);
   let [date, updatedate] = useState({
@@ -85,15 +101,12 @@ export default function Daysheet({ navigation }) {
     return unsubscribe;
   }, [navigation]);
   async function fetchacess() {
-    setrole("user");
-    await checkreadings()
-      .then((res) => {
-        setscessforemployee(res.data.Allowemployee);
-      })
-      .catch((err) => {});
-    await AsyncStorage.getItem("role").then((value) => {
-      setrole(value);
-    });
+    if (state.savecounter) {
+      refreshpage(false);
+      setTimeout(() => {
+        refreshpage(true);
+      }, 100);
+    }
   }
   function datechanged(date) {
     refreshpage(false);
@@ -117,9 +130,7 @@ export default function Daysheet({ navigation }) {
           </View>
           {refresh && (
             <>
-              <DaysheetProvider>
-                <Navigation navigating={navigation} dateselected={date} />
-              </DaysheetProvider>
+              <Navigation navigating={navigation} dateselected={date} />
             </>
           )}
         </>

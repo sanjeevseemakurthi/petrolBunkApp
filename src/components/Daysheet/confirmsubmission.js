@@ -6,8 +6,8 @@ import {
   saveengineoils,
 } from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
-export default function Confirmsubmission({ navigation, route }) {
-  let date = route.params.dateselected;
+export default function Confirmsubmission(params) {
+  let date = params.dateselected;
   let todaysdate = new Date();
   todaysdate.setDate(todaysdate.getDate() - 1);
   const [state, setState] = useContext(DaysheetContext);
@@ -23,7 +23,8 @@ export default function Confirmsubmission({ navigation, route }) {
         .then((res) => {})
         .catch();
     }
-    state.savecounter = state.savecounter + 1;
+    state.savecounter = true;
+    params.parentnavigation.navigate("Home");
   }
   return (
     <>
