@@ -29,12 +29,13 @@ export default function Addsub({ navigation, route }) {
   let [adjustwidth, onchangewidth] = useState(30);
   const [state, setState] = useContext(DaysheetContext);
   let holdstate = state;
-  if (!holdstate.needrefresh.includes(route.params.suburl)) {
-    holdstate.needrefresh.push(route.params.suburl);
-    debugger;
-    setState(holdstate);
-  }
 
+  function populatechange() {
+    if (!holdstate.needrefresh.includes(route.params.suburl)) {
+      holdstate.needrefresh.push(route.params.suburl);
+      setState(holdstate);
+    }
+  }
   useEffect(() => {
     populatedata();
   }, []);
@@ -61,7 +62,6 @@ export default function Addsub({ navigation, route }) {
     changeselectedrow(row);
   }
   function editrow(row) {
-    console.log(row);
     changeselectedrow(row);
     setModalVisible(true);
   }
@@ -71,6 +71,7 @@ export default function Addsub({ navigation, route }) {
     changeselectedrow({});
   }
   async function savedata(datatosave) {
+    populatechange();
     await savedetails(route.params.submiturl, datatosave)
       .then((res) => {
         populatedata();
@@ -78,6 +79,7 @@ export default function Addsub({ navigation, route }) {
       .catch();
   }
   async function deletedata(datatodelete) {
+    populatechange();
     await deletedetails(route.params.deleteurl, datatodelete)
       .then((res) => {
         if (res.data.Status === "Failed") {

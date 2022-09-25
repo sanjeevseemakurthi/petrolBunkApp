@@ -3,14 +3,14 @@ import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 import Table from "../../shared/table";
 import { getaccounts, saveperticulars } from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
-export default function Perticulars({ navigation, route }) {
+export default function Perticulars(params) {
   const [state, setState] = useContext(DaysheetContext);
   let [tabledata, onchangetabledata] = useState([]);
   let [columns, onchangecolumns] = useState([]);
   let [cashleft, cashchange] = useState([]);
   let [options, newoptions] = useState([]);
   let holddata = [];
-  let date = route.params.dateselected;
+  let date = params.dateselected;
   let selecteddate = new Date(date.date.split("-"));
   selecteddate.setDate(selecteddate.getDate() + 1);
   useEffect(() => {
@@ -45,6 +45,26 @@ export default function Perticulars({ navigation, route }) {
       datachanged(tabledata, 0, 0, 0);
     }
   }, [state.oilsales, state.engineoilsales]);
+  useEffect(() => {
+    const unsubscribe = params.navigation.addListener("focus", () => {
+      refresh();
+    });
+    return unsubscribe;
+  }, [params.navigation]);
+  useEffect(() => {
+    const unsubscribe = params.parentnavigation.addListener("focus", () => {
+      refresh();
+    });
+    return unsubscribe;
+  }, [params.parentnavigation]);
+  async function refresh() {
+    let index = state.needrefresh.indexOf("getaccountsforedit");
+    if (index !== -1) {
+      state.needrefresh.splice(index, 1);
+      setState(state);
+      populatedata();
+    }
+  }
   let cashindex = -1;
   let oilindex = -1;
   let engineoilindex = -1;

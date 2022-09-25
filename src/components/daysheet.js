@@ -22,7 +22,15 @@ function MyTabs(params) {
       <Tab.Navigator>
         <Tab.Screen
           name="Readings"
-          component={Readings}
+          component={({ navigation, route }) => {
+            return (
+              <Readings
+                dateselected={params.dateselected}
+                parentnavigation={params.navigating}
+                navigation={navigation}
+              />
+            );
+          }}
           options={{
             headerShown: false,
             tabBarIcon: () => {
@@ -33,7 +41,15 @@ function MyTabs(params) {
         />
         <Tab.Screen
           name="Engine oil"
-          component={Engineoil}
+          component={({ navigation, route }) => {
+            return (
+              <Engineoil
+                dateselected={params.dateselected}
+                parentnavigation={params.navigating}
+                navigation={navigation}
+              />
+            );
+          }}
           options={{
             headerShown: false,
             tabBarIcon: () => {
@@ -44,7 +60,15 @@ function MyTabs(params) {
         />
         <Tab.Screen
           name="Perticulars"
-          component={Perticulars}
+          component={({ navigation, route }) => {
+            return (
+              <Perticulars
+                dateselected={params.dateselected}
+                parentnavigation={params.navigating}
+                navigation={navigation}
+              />
+            );
+          }}
           options={{
             headerShown: false,
             tabBarIcon: () => {
