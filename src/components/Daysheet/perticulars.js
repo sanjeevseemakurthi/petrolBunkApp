@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  ImageBackground,
+  Text,
+  View,
+  Button,
+  ScrollView,
+} from "react-native";
 import Table from "../../shared/table";
 import { getaccounts, saveperticulars } from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
@@ -221,20 +228,29 @@ export default function Perticulars(params) {
     datachanged(data, 0, 0, 0);
   }
   return (
-    <ScrollView style={{ margin: 10 }}>
-      <Table
-        tabledata={tabledata}
-        columns={columns}
-        datachanged={datachanged}
-      />
-      <View>
-        <Text>Cash : {cashleft}</Text>
-      </View>
-      <View style={tablestyles.flexview}>
-        <Button title="Addrow" onPress={addrow} />
-        <Button title="Removelastrow" onPress={removerow} />
-      </View>
-    </ScrollView>
+    <ImageBackground
+      source={require("../../../assets/loginbg1.jpg")}
+      style={{
+        flex: 1,
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <ScrollView style={{ margin: 10 }}>
+        <Table
+          tabledata={tabledata}
+          columns={columns}
+          datachanged={datachanged}
+        />
+        <View>
+          <Text>Cash : {cashleft}</Text>
+        </View>
+        <View style={tablestyles.flexview}>
+          <Button title="Addrow" onPress={addrow} />
+          <Button title="Removelastrow" onPress={removerow} />
+        </View>
+      </ScrollView>
+    </ImageBackground>
   );
 }
 

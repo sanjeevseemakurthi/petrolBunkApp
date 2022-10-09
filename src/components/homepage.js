@@ -6,32 +6,58 @@ import {
   Button,
   View,
   ScrollView,
+  ImageBackground,
 } from "react-native";
-import { getcallibrationdetails } from "../services/sharedservices";
+import { postcallibrationdetails } from "../services/sharedservices";
 import { useState, useEffect } from "react";
 import Table from "../shared/table";
 import DatePickerTest from "../shared/datepickertest";
 
-export default function Homepage() {
+export default function Homepage({ navigation }) {
   const [filterdata, filterdatarefresh] = useState([]);
   const [actualdata, actualdatarefresh] = useState([]);
-  const date1 = new Date();
-  const date2 = new Date();
+  let date1 = new Date();
+  let date2 = new Date();
   date2.setDate(date2.getDate() + 40);
   useEffect(() => {
-    populatedata();
-  }, []);
-  async function populatedata() {
-    await getcallibrationdetails()
+    const unsubscribe = navigation.addListener("focus", () => {
+      populatedata({
+        initialdate: date1.toISOString().split("T")[0],
+        finaldate: date2.toISOString().split("T")[0],
+      });
+    });
+    return unsubscribe;
+  }, [navigation]);
+  async function populatedata(payload) {
+    await postcallibrationdetails(payload)
       .then((res) => {
         actualdatarefresh(res.data.data);
       })
       .catch((err) => {});
   }
-  function initaldatechanged(date) {}
-  function finaldatechanged(date) {}
+  function initaldatechanged(date) {
+    date1 = new Date(date.date.split("-"));
+    populatedata({
+      initialdate: date.date,
+      finaldate: date2.toISOString().split("T")[0],
+    });
+  }
+  function finaldatechanged(date) {
+    date2 = new Date(date.date.split("-"));
+    populatedata({
+      initialdate: date1.toISOString().split("T")[0],
+      finaldate: date.date,
+    });
+  }
   return (
-    <>
+    <ImageBackground
+      source={require("../../assets/loginbg1.jpg")}
+      style={{
+        flex: 1,
+        width: "100%",
+        height: "100%",
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -50,12 +76,14 @@ export default function Homepage() {
           initaldate={date2}
         ></DatePickerTest>
       </View>
-      {actualdata.map((data, index) => (
-        <View key={"data" + index}>
-          <Banner discription={data.discription} nextdate={data.nextdate} />
-        </View>
-      ))}
-    </>
+      <ScrollView>
+        {actualdata.map((data, index) => (
+          <View key={"data" + index}>
+            <Banner discription={data.discription} nextdate={data.nextdate} />
+          </View>
+        ))}
+      </ScrollView>
+    </ImageBackground>
   );
 }
 
@@ -71,6 +99,7 @@ function Banner(params) {
         padding: 10,
         margin: 10,
         borderWidth: 1,
+        backgroundColor: "#fff",
         justifyContent: "space-evenly",
       }}
     >

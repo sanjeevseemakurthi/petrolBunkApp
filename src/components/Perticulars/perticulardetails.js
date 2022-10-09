@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, Button, View } from "react-native";
+import { StyleSheet, Text, Button, View, ScrollView } from "react-native";
 import DatePickerTest from "../../shared/datepickertest";
 import { useState, useEffect } from "react";
 import { getpericulardetails } from "../../services/sharedservices";
@@ -11,8 +11,8 @@ export default function Perticulardetails({ navigation, route }) {
   const [filtersumjama, changefiltersumjama] = useState(0);
   const [filtersumkarchu, changefiltersumkarchu] = useState(0);
 
-  const date1 = new Date();
-  const date2 = new Date();
+  let date1 = new Date();
+  let date2 = new Date();
   date1.setDate(date1.getDate() - 30);
   useEffect(() => {
     populatedata();
@@ -22,33 +22,33 @@ export default function Perticulardetails({ navigation, route }) {
       .then((res) => {
         actualdatarefresh(res.data.data);
         pertucalardetailschange(res.data.accinfo);
-        setTimeout(() => {
-          filterbydate(res.data.data);
-        }, 100);
+        filterbydate(res.data.data);
       })
       .catch((err) => {});
   }
   function initaldatechanged(date) {
-    date1 = new Date(date.data.spli("-"));
+    date1 = new Date(date.date);
     filterbydate(actualdata);
   }
   function finaldatechanged(date) {
-    date2 = new Date(date.data.spli("-"));
+    date2 = new Date(date.date);
     filterbydate(actualdata);
   }
   function filterbydate(datatofilter) {
     let jama = 0;
     let karchu = 0;
-    let data = datatofilter.filter((res) => {
-      if (
-        new Date(res.date.split("-")) < date2 &&
-        new Date(res.date.split("-")) > date1
-      ) {
+    let data = [];
+    debugger;
+    datatofilter.forEach((res) => {
+      const datetest1 = new Date(res.date);
+      console.log(datetest1);
+      if (datetest1 < date2 && datetest1 > date1) {
         jama = jama + res.jama;
         karchu = karchu + res.karchu;
-        return true;
-      } else return false;
+        data.push(res);
+      }
     });
+    console.log(data);
     filterdatarefresh([...data]);
   }
   return (
@@ -77,11 +77,15 @@ export default function Perticulardetails({ navigation, route }) {
           initaldate={date2}
         ></DatePickerTest>
       </View>
-      {filterdata.map((data, index) => (
-        <View key={"data" + index}>
-          <Banner discription={data} accouninfo={pertucalardetails} />
-        </View>
-      ))}
+
+      <ScrollView>
+        {console.log(filterdata)}
+        {filterdata.map((data, index) => (
+          <View key={"dataofperticular" + index}>
+            <Banner discription={data} accouninfo={pertucalardetails} />
+          </View>
+        ))}
+      </ScrollView>
     </>
   );
 }

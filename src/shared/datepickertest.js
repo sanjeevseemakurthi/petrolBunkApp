@@ -32,11 +32,12 @@ export default function DatePickerTest(props) {
       selectedDate.toISOString().split("T")[0]
     ) {
       const currentDate = selectedDate;
-      setShow(false);
+
       setDate(currentDate);
       let format = currentDate.toISOString().split("T")[0];
       props.datechanged({ date: format });
     }
+    setShow(false);
   };
   function showDatepicker() {
     setShow(true);

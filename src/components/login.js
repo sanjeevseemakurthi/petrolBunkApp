@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Icon from "react-native-vector-icons/AntDesign";
 import {
   StyleSheet,
   Text,
@@ -11,14 +12,19 @@ import {
   Pressable,
 } from "react-native";
 import { useState, useEffect } from "react";
-import { Authenticateservice } from "../services/sharedservices";
+import {
+  Authenticateservice,
+  createnewcompanycall,
+} from "../services/sharedservices";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login(props) {
   let [loginclicked, onloginclicked] = useState(false);
   let [createaccountclicked, oncreateclicked] = useState(false);
+  let [companyname, onchangecompany] = useState("");
   let [username, onchangeusername] = useState("");
   let [password, onChangepassword] = useState("");
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -27,7 +33,7 @@ export default function Login(props) {
       >
         <View style={styles.parentview}>
           <View style={styles.childviewone}>
-            <Text style={styles.textheader}>Welcome to Bunk desk</Text>
+            <Text style={styles.apptitle}>Welcome to Bunk desk</Text>
           </View>
           <View style={styles.childviewtwo}>
             {loginclicked && (
@@ -49,12 +55,12 @@ export default function Login(props) {
                   value={password}
                   placeholder="password"
                 />
-                <Button
+                <Pressable
                   onPress={() => submitted()}
-                  title="Submit"
-                  color="#511be3"
-                  accessibilityLabel="Learn more about this purple button"
-                />
+                  style={[styles.buttonstyle, { justifyContent: "center" }]}
+                >
+                  <Text style={styles.textheader}> Submit</Text>
+                </Pressable>
                 <Pressable
                   onPress={() => {
                     onloginclicked(false);
@@ -67,24 +73,69 @@ export default function Login(props) {
             )}
             {!createaccountclicked && !loginclicked && (
               <View style={styles.userdetails}>
-                <View style={styles.buttonstyle}>
-                  <Button
-                    title="Login"
-                    onPress={() => {
-                      onloginclicked(true);
-                      oncreateclicked(false);
-                    }}
-                  ></Button>
-                </View>
-                <View style={styles.buttonstyle}>
-                  <Button
-                    title="Create new user"
-                    onPress={() => {
-                      onloginclicked(false);
-                      oncreateclicked(true);
-                    }}
-                  ></Button>
-                </View>
+                <Pressable
+                  style={styles.buttonstyle}
+                  onPress={() => {
+                    onloginclicked(true);
+                    oncreateclicked(false);
+                  }}
+                >
+                  <Text style={styles.textheader}>Login</Text>
+                  <Icon name="login" size={20} color="#fafafa" />
+                </Pressable>
+                <Pressable
+                  style={styles.buttonstyle}
+                  onPress={() => {
+                    onloginclicked(false);
+                    oncreateclicked(true);
+                  }}
+                >
+                  <Text style={styles.textheader}>Create new User</Text>
+                  <Icon name="adduser" size={20} color="#fafafa" />
+                </Pressable>
+              </View>
+            )}
+            {createaccountclicked && (
+              <View style={styles.userdetails}>
+                <TextInput
+                  variant="standard"
+                  label="Comapny name"
+                  style={styles.textform}
+                  onChangeText={onchangecompany}
+                  value={companyname}
+                  placeholder="Comapny name"
+                />
+                <TextInput
+                  variant="standard"
+                  label="username"
+                  style={styles.textform}
+                  onChangeText={onchangeusername}
+                  value={username}
+                  placeholder="username"
+                />
+                <TextInput
+                  variant="standard"
+                  label="Password"
+                  secureTextEntry={true}
+                  style={styles.textform}
+                  onChangeText={onChangepassword}
+                  value={password}
+                  placeholder="password"
+                />
+                <Pressable
+                  onPress={() => createnewcompany()}
+                  style={[styles.buttonstyle, { justifyContent: "center" }]}
+                >
+                  <Text style={styles.textheader}> Creat company </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    onloginclicked(false);
+                    oncreateclicked(false);
+                  }}
+                >
+                  <Text style={styles.textStylepresable}> Go Back</Text>
+                </Pressable>
               </View>
             )}
           </View>
@@ -92,6 +143,21 @@ export default function Login(props) {
       </ImageBackground>
     </SafeAreaView>
   );
+
+  async function createnewcompany() {
+    let payload = {
+      name: companyname,
+      location: "test",
+      username: username,
+      password: password,
+    };
+    const data = await createnewcompanycall(payload)
+      .then((res) => {
+        submitted();
+      })
+      .catch((err) => {});
+  }
+
   async function submitted() {
     let payload = {
       username: username,
@@ -121,8 +187,22 @@ const styles = StyleSheet.create({
   buttonstyle: {
     width: "50%",
     padding: 10,
-    margin: 5,
-    justifyContent: "center",
+    margin: 7,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#1e3deb",
+    borderRadius: 20,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
   },
   textStylepresable: {
     textDecorationLine: "underline",
@@ -162,7 +242,12 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   textheader: {
-    fontSize: 25,
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#ffffff",
+  },
+  apptitle: {
+    fontSize: 40,
     fontWeight: "500",
     color: "#ffffff",
   },

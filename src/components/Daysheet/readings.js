@@ -6,6 +6,7 @@ import {
   Button,
   View,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import Table from "../../shared/table";
@@ -205,15 +206,24 @@ export default function Readings(params) {
     onchangetabledata([...tabledata]);
   }
   return (
-    <ScrollView style={{ margin: 10 }}>
-      {refresh && (
-        <Table
-          tabledata={tabledata}
-          columns={columns}
-          datachanged={datachanged}
-        />
-      )}
-    </ScrollView>
+    <ImageBackground
+      source={require("../../../assets/loginbg1.jpg")}
+      style={{
+        flex: 1,
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <ScrollView style={{ margin: 10 }}>
+        {refresh && (
+          <Table
+            tabledata={tabledata}
+            columns={columns}
+            datachanged={datachanged}
+          />
+        )}
+      </ScrollView>
+    </ImageBackground>
   );
 }
 const tablestyles = StyleSheet.create({

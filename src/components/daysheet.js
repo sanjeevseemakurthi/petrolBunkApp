@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, View, Button } from "react-native";
+import { Text, View, Button, ImageBackground } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Engineoil from "./Daysheet/engineoil";
@@ -137,28 +137,37 @@ function Daysheetsub(params) {
     }, 100);
   }
   return (
-    <>
-      {(allowacess || role === "admin") && (
-        <>
-          <View style={{ margin: 10 }}>
-            <DatePickerTest
-              datechanged={datechanged}
-              buttontitle="Click Me : "
-              maxdate={true}
-              initaldate={date2}
-            ></DatePickerTest>
-          </View>
-          {refresh && (
-            <>
-              <Navigation navigating={navigation} dateselected={date} />
-            </>
-          )}
-        </>
-      )}
-      {!(allowacess || role === "admin") && (
-        <Text> Data is already inserted</Text>
-      )}
-    </>
+    <View style={{ backgroundColor: "#000005", height: "100%" }}>
+      <ImageBackground
+        source={require("../../assets/loginbg1.jpg")}
+        style={{
+          flex: 1,
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {(allowacess || role === "admin") && (
+          <>
+            <View style={{ margin: 10 }}>
+              <DatePickerTest
+                datechanged={datechanged}
+                buttontitle="Click Me : "
+                maxdate={true}
+                initaldate={date2}
+              ></DatePickerTest>
+            </View>
+            {refresh && (
+              <>
+                <Navigation navigating={navigation} dateselected={date} />
+              </>
+            )}
+          </>
+        )}
+        {!(allowacess || role === "admin") && (
+          <Text> Data is already inserted</Text>
+        )}
+      </ImageBackground>
+    </View>
   );
 }
 function Navigation(params) {

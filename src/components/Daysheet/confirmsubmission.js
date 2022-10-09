@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, Button, View } from "react-native";
+import { StyleSheet, ImageBackground, Text, Button, View } from "react-native";
 import {
   savereadings,
   saveperticulars,
@@ -27,7 +27,14 @@ export default function Confirmsubmission(params) {
     params.parentnavigation.navigate("Home");
   }
   return (
-    <>
+    <ImageBackground
+      source={require("../../../assets/loginbg1.jpg")}
+      style={{
+        flex: 1,
+        width: "100%",
+        height: "100%",
+      }}
+    >
       <View
         style={{
           margin: 10,
@@ -43,6 +50,6 @@ export default function Confirmsubmission(params) {
           color="#511be3"
         />
       </View>
-    </>
+    </ImageBackground>
   );
 }

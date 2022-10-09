@@ -54,7 +54,6 @@ export default function Tablecelloption(props) {
 }
 const tablestyles = StyleSheet.create({
   input: {
-    borderWidth: 1,
     alignItems: "center",
     textAlign: "center",
     padding: 2,

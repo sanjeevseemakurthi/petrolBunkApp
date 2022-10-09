@@ -6,7 +6,7 @@ const url = "http://192.168.31.104:8080/";
 axios.interceptors.request.use((req) => {
   async function addheader() {
     let headre;
-    if (!req.url.includes("authenticate")) {
+    if (!req.url.includes("authenticate") && !req.url.includes("newcompany")) {
       await AsyncStorage.getItem("Token").then((value) => {
         headre = value;
       });
@@ -42,6 +42,9 @@ export function ComponentServices() {
 export function Authenticateservice(payload) {
   return axios.post(url + "authenticate", payload);
 }
+export function createnewcompanycall(payload) {
+  return axios.post(url + "newcompany", payload);
+}
 export function sessioncheck() {
   return axios.get(url + "sessioncheck");
 }
@@ -71,6 +74,9 @@ export function checkreadings() {
 export function getcallibrationdetails() {
   return axios.get(url + "getcallibration");
 }
+export function postcallibrationdetails(payload) {
+  return axios.post(url + "postcallibdetails", payload);
+}
 
 // for perticulars
 export function getonlyaccounts() {
@@ -79,6 +85,9 @@ export function getonlyaccounts() {
 export function getpericulardetails(data) {
   return axios.post(url + "getpericulardetails", data);
 }
+// export function postpericulardetails(payload) {
+//   return axios.post(url + "postcallibdetails", payload);
+// }
 
 // for settings
 export function geteditdetails(suburl) {
