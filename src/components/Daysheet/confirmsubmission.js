@@ -4,6 +4,7 @@ import {
   savereadings,
   saveperticulars,
   saveengineoils,
+  fdate,
 } from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
 export default function Confirmsubmission(params) {
@@ -15,7 +16,7 @@ export default function Confirmsubmission(params) {
     await saveperticulars({ date: date.date, data: state.perticularsdata })
       .then((res) => {})
       .catch();
-    if (date.date === todaysdate.toISOString().split("T")[0]) {
+    if (date.date === fdate(todaysdate)) {
       await savereadings(state.oildata)
         .then((res) => {})
         .catch();

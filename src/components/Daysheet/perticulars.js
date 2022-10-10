@@ -18,7 +18,7 @@ export default function Perticulars(params) {
   let [options, newoptions] = useState([]);
   let holddata = [];
   let date = params.dateselected;
-  let selecteddate = new Date(date.date.split("-"));
+  let selecteddate = new Date(date.date);
   selecteddate.setDate(selecteddate.getDate() + 1);
   useEffect(() => {
     populatedata();

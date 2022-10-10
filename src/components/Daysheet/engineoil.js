@@ -92,7 +92,7 @@ export default function Engineoil(params) {
   ];
   let formattedToday = "";
   let date = params.dateselected;
-  let selecteddate = new Date(date.date.split("-"));
+  let selecteddate = new Date(date.date);
   selecteddate.setDate(selecteddate.getDate() + 1);
   useEffect(() => {
     populatedata();

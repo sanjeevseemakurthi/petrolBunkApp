@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import DatePickerTest from "../shared/datepickertest";
 import Icon from "react-native-vector-icons/AntDesign";
 import { DaysheetContext } from "./Daysheet/Context/DaysheetContext";
+import { fdate } from "../services/sharedservices";
 
 const Tab = createBottomTabNavigator();
 
@@ -111,7 +112,7 @@ function Daysheetsub(params) {
   const date2 = new Date();
   date2.setDate(date2.getDate() - 1);
   let [date, updatedate] = useState({
-    date: date2.toISOString().split("T")[0],
+    date: fdate(date2),
   });
 
   useEffect(() => {

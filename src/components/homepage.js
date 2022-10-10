@@ -8,7 +8,7 @@ import {
   ScrollView,
   ImageBackground,
 } from "react-native";
-import { postcallibrationdetails } from "../services/sharedservices";
+import { postcallibrationdetails, fdate } from "../services/sharedservices";
 import { useState, useEffect } from "react";
 import Table from "../shared/table";
 import DatePickerTest from "../shared/datepickertest";
@@ -22,8 +22,8 @@ export default function Homepage({ navigation }) {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       populatedata({
-        initialdate: date1.toISOString().split("T")[0],
-        finaldate: date2.toISOString().split("T")[0],
+        initialdate: fdate(date1),
+        finaldate: fdate(date2),
       });
     });
     return unsubscribe;
@@ -36,16 +36,16 @@ export default function Homepage({ navigation }) {
       .catch((err) => {});
   }
   function initaldatechanged(date) {
-    date1 = new Date(date.date.split("-"));
+    date1 = new Date(date.date);
     populatedata({
       initialdate: date.date,
-      finaldate: date2.toISOString().split("T")[0],
+      finaldate: fdate(date2),
     });
   }
   function finaldatechanged(date) {
-    date2 = new Date(date.date.split("-"));
+    date2 = new Date(date.date);
     populatedata({
-      initialdate: date1.toISOString().split("T")[0],
+      initialdate: fdate(date1),
       finaldate: date.date,
     });
   }

@@ -28,6 +28,7 @@ export default function Perticulardetails({ navigation, route }) {
   }
   function initaldatechanged(date) {
     date1 = new Date(date.date);
+    console.log(date.date);
     filterbydate(actualdata);
   }
   function finaldatechanged(date) {
@@ -38,10 +39,11 @@ export default function Perticulardetails({ navigation, route }) {
     let jama = 0;
     let karchu = 0;
     let data = [];
-    debugger;
     datatofilter.forEach((res) => {
       const datetest1 = new Date(res.date);
-      console.log(datetest1);
+      console.log(datetest1, date1, date2);
+      date1.setHours(23, 59, 59, 0);
+      date2.setHours(23, 59, 59, 0);
       if (datetest1 < date2 && datetest1 > date1) {
         jama = jama + res.jama;
         karchu = karchu + res.karchu;

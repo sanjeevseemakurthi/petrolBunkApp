@@ -10,7 +10,7 @@ import {
   Platform,
 } from "react-native";
 import { useState } from "react";
-
+import { fdate } from "../services/sharedservices";
 export default function DatePickerTest(props) {
   const [date, setDate] = useState(
     props.initaldate ? props.initaldate : new Date()
@@ -18,23 +18,18 @@ export default function DatePickerTest(props) {
   const iswindows = Platform.OS === "web";
   const [show, setShow] = useState(false);
   const [datetext, chnagedatetext] = useState(
-    props.initaldate
-      ? props.initaldate.toISOString().split("T")[0]
-      : new Date().toISOString().split("T")[0]
+    props.initaldate ? fdate(props.initaldate) : fdate(new Date())
   );
   const [maxdate, changemaxdate] = useState(
     props.maxdate ? new Date() : new Date().setDate(new Date().getDate() + 365)
   );
 
   const onChange = (event, selectedDate) => {
-    if (
-      date.toISOString().split("T")[0] !==
-      selectedDate.toISOString().split("T")[0]
-    ) {
+    if (fdate(date) !== fdate(selectedDate)) {
       const currentDate = selectedDate;
 
       setDate(currentDate);
-      let format = currentDate.toISOString().split("T")[0];
+      let format = fdate(currentDate);
       props.datechanged({ date: format });
     }
     setShow(false);
@@ -47,10 +42,7 @@ export default function DatePickerTest(props) {
       {!iswindows && (
         <Button
           onPress={showDatepicker}
-          title={
-            (props.buttontitle ? props.buttontitle : "") +
-            date.toISOString().split("T")[0]
-          }
+          title={(props.buttontitle ? props.buttontitle : "") + fdate(date)}
         />
       )}
       {iswindows && (

@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import DatePickerTest from "./datepickertest";
+import { fdate } from "../services/sharedservices";
 
 export default function Eachtext(textprops) {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -23,10 +24,7 @@ export default function Eachtext(textprops) {
     setIsEnabled(true);
   }
   if (textprops.type === "Date" && textprops.eachtext === "") {
-    textprops.textchange(
-      textprops.editablecol,
-      new Date().toISOString().split("T")[0]
-    );
+    textprops.textchange(textprops.editablecol, fdate(new Date()));
   }
   function changedata(value) {
     onchangetext(value);

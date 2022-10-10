@@ -2,6 +2,18 @@ import axios from "axios";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+export function fdate(fromDate) {
+  const tesymonth = fromDate.getMonth() + 1;
+  const testdate = fromDate.getDate();
+  return (
+    fromDate.getFullYear() +
+    "-" +
+    (tesymonth < 10 ? "0" + tesymonth : tesymonth) +
+    "-" +
+    (testdate < 10 ? "0" + testdate : testdate)
+  );
+}
+
 const url = "http://192.168.31.104:8080/";
 axios.interceptors.request.use((req) => {
   async function addheader() {
