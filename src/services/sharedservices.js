@@ -14,7 +14,7 @@ export function fdate(fromDate) {
   );
 }
 
-const url = "http://192.168.31.104:8080/";
+const url = "http://3.110.83.150:8080/";
 axios.interceptors.request.use((req) => {
   async function addheader() {
     let headre;

@@ -207,7 +207,7 @@ export default function Readings(params) {
   }
   return (
     <ImageBackground
-      source={require("../../../assets/loginbg1.jpg")}
+      source={require("../../../assets/bglogs1.jpg")}
       style={{
         flex: 1,
         width: "100%",

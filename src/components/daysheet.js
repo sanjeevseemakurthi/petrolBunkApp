@@ -140,7 +140,7 @@ function Daysheetsub(params) {
   return (
     <View style={{ backgroundColor: "#000005", height: "100%" }}>
       <ImageBackground
-        source={require("../../assets/loginbg1.jpg")}
+        source={require("../../assets/bglogs1.jpg")}
         style={{
           flex: 1,
           width: "100%",
