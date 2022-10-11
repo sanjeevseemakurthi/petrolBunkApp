@@ -13,24 +13,24 @@ import Table from "../../shared/table";
 import { getengineoils, saveengineoils } from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
 
-export default function Engineoil(params) {
+export default function Engineoil({ navigation, route }) {
   let [state, setState] = useContext(DaysheetContext);
   let [tabledata, onchangetabledata] = useState([]);
   let [columns, onchangecolumns] = useState([]);
   let [serachtext, changesearch] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = params.navigation.addListener("focus", () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       refresh();
     });
     return unsubscribe;
-  }, [params.navigation]);
+  }, [navigation]);
   useEffect(() => {
-    const unsubscribe = params.parentnavigation.addListener("focus", () => {
+    const unsubscribe = state.parentnavigation.addListener("focus", () => {
       refresh();
     });
     return unsubscribe;
-  }, [params.parentnavigation]);
+  }, [state.parentnavigation]);
   async function refresh() {
     let index = state.needrefresh.indexOf("getenginoilforedit");
     if (index !== -1) {
@@ -91,7 +91,7 @@ export default function Engineoil(params) {
     },
   ];
   let formattedToday = "";
-  let date = params.dateselected;
+  let date = route.params.dateselected;
   let selecteddate = new Date(date.date);
   selecteddate.setDate(selecteddate.getDate() + 1);
   useEffect(() => {

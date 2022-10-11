@@ -97,13 +97,37 @@ export default function Addsub({ navigation, route }) {
   }
   return (
     <View style={{ margin: 5 }}>
-      <View style={{ width: 200, left: "50%", padding: 10 }}>
-        <Button
-          title="Add New Row"
-          onPress={() => {
-            setModalVisible(true);
+      <View
+        style={{
+          padding: 10,
+          justifyContent: "space-around",
+          flexDirection: "row",
+        }}
+      >
+        <View
+          style={{
+            width: 200,
+            padding: 10,
+            justifyContent: "space-around",
           }}
-        ></Button>
+        >
+          <Button
+            title="Go Back"
+            onPress={() => {
+              navigation.goBack();
+            }}
+          ></Button>
+        </View>
+        <View
+          style={{ width: 200, padding: 10, justifyContent: "space-around" }}
+        >
+          <Button
+            title="Add New Row"
+            onPress={() => {
+              setModalVisible(true);
+            }}
+          ></Button>
+        </View>
       </View>
       {refresh && (
         <ScrollView horizontal={true}>

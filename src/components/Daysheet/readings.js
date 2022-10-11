@@ -13,11 +13,11 @@ import Table from "../../shared/table";
 import { getpumps, savereadings } from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
 
-export default function Readings(params) {
+export default function Readings({ navigation, route }) {
   const [state, setState] = useContext(DaysheetContext);
   const [refresh, refreshstate] = useState(true);
   const [columns, changecolumns] = useState([true]);
-  let date = params.dateselected;
+  let date = route.params.dateselected;
   let selecteddate = date.date;
   let testcolumns = [
     {
@@ -78,17 +78,17 @@ export default function Readings(params) {
     },
   ];
   useEffect(() => {
-    const unsubscribe = params.navigation.addListener("focus", () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       repopulate();
     });
     return unsubscribe;
-  }, [params.navigation]);
+  }, [navigation]);
   useEffect(() => {
-    const unsubscribe = params.parentnavigation.addListener("focus", () => {
+    const unsubscribe = state.parentnavigation.addListener("focus", () => {
       repopulate();
     });
     return unsubscribe;
-  }, [params.parentnavigation]);
+  }, [state.parentnavigation]);
   async function repopulate() {
     let index = state.needrefresh.indexOf("getpumpsforedit");
     if (index !== -1) {

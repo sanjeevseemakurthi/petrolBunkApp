@@ -12,6 +12,8 @@ const DaysheetProvider = (props) => {
     perticularsdata: [],
     savecounter: false,
     needrefresh: [],
+    nvigation: [],
+    parentnavigation: [],
   });
   return (
     <DaysheetContext.Provider value={[oilsales, addoils]}>

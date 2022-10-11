@@ -2,7 +2,6 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Addsub from "./settings/addsub";
 import Addmain from "./settings/addmain";
-import { DaysheetProvider } from "../components/Daysheet/Context/DaysheetContext";
 
 const Stack = createStackNavigator();
 

@@ -5,11 +5,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Engineoil from "./Daysheet/engineoil";
 import Perticulars from "./Daysheet/perticulars";
 import Readings from "./Daysheet/readings";
-import { DaysheetProvider } from "./Daysheet/Context/DaysheetContext";
 import Confirmsubmission from "./Daysheet/confirmsubmission";
 import { useState, useEffect, useContext } from "react";
-import { checkreadings } from "../services/sharedservices";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import DatePickerTest from "../shared/datepickertest";
 import Icon from "react-native-vector-icons/AntDesign";
 import { DaysheetContext } from "./Daysheet/Context/DaysheetContext";
@@ -18,20 +15,15 @@ import { fdate } from "../services/sharedservices";
 const Tab = createBottomTabNavigator();
 
 function MyTabs(params) {
+  const [state, setState] = useContext(DaysheetContext);
+  state.parentnavigation = params.navigating;
+  setState(state);
   return (
     <>
       <Tab.Navigator>
         <Tab.Screen
           name="Readings"
-          component={({ navigation, route }) => {
-            return (
-              <Readings
-                dateselected={params.dateselected}
-                parentnavigation={params.navigating}
-                navigation={navigation}
-              />
-            );
-          }}
+          component={Readings}
           options={{
             headerShown: false,
             tabBarIcon: () => {
@@ -42,15 +34,7 @@ function MyTabs(params) {
         />
         <Tab.Screen
           name="Engine oil"
-          component={({ navigation, route }) => {
-            return (
-              <Engineoil
-                dateselected={params.dateselected}
-                parentnavigation={params.navigating}
-                navigation={navigation}
-              />
-            );
-          }}
+          component={Engineoil}
           options={{
             headerShown: false,
             tabBarIcon: () => {
@@ -61,15 +45,7 @@ function MyTabs(params) {
         />
         <Tab.Screen
           name="Perticulars"
-          component={({ navigation, route }) => {
-            return (
-              <Perticulars
-                dateselected={params.dateselected}
-                parentnavigation={params.navigating}
-                navigation={navigation}
-              />
-            );
-          }}
+          component={Perticulars}
           options={{
             headerShown: false,
             tabBarIcon: () => {
@@ -80,14 +56,7 @@ function MyTabs(params) {
         />
         <Tab.Screen
           name="submitdata"
-          component={() => {
-            return (
-              <Confirmsubmission
-                dateselected={params.dateselected}
-                parentnavigation={params.navigating}
-              />
-            );
-          }}
+          component={Confirmsubmission}
           options={{
             headerShown: false,
             tabBarIcon: () => {

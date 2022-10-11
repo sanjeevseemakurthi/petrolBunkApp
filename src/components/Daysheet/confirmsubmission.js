@@ -7,8 +7,8 @@ import {
   fdate,
 } from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
-export default function Confirmsubmission(params) {
-  let date = params.dateselected;
+export default function Confirmsubmission({ navigation, route }) {
+  let date = route.params.dateselected;
   let todaysdate = new Date();
   todaysdate.setDate(todaysdate.getDate() - 1);
   const [state, setState] = useContext(DaysheetContext);
@@ -25,7 +25,7 @@ export default function Confirmsubmission(params) {
         .catch();
     }
     state.savecounter = true;
-    params.parentnavigation.navigate("Home");
+    state.parentnavigation.navigate("Home");
   }
   return (
     <ImageBackground

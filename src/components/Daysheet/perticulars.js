@@ -10,14 +10,14 @@ import {
 import Table from "../../shared/table";
 import { getaccounts, saveperticulars } from "../../services/sharedservices";
 import { DaysheetContext } from "./Context/DaysheetContext";
-export default function Perticulars(params) {
+export default function Perticulars({ navigation, route }) {
   const [state, setState] = useContext(DaysheetContext);
   let [tabledata, onchangetabledata] = useState([]);
   let [columns, onchangecolumns] = useState([]);
   let [cashleft, cashchange] = useState([]);
   let [options, newoptions] = useState([]);
   let holddata = [];
-  let date = params.dateselected;
+  let date = route.params.dateselected;
   let selecteddate = new Date(date.date);
   selecteddate.setDate(selecteddate.getDate() + 1);
   useEffect(() => {
@@ -53,17 +53,17 @@ export default function Perticulars(params) {
     }
   }, [state.oilsales, state.engineoilsales]);
   useEffect(() => {
-    const unsubscribe = params.navigation.addListener("focus", () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       refresh();
     });
     return unsubscribe;
-  }, [params.navigation]);
+  }, [navigation]);
   useEffect(() => {
-    const unsubscribe = params.parentnavigation.addListener("focus", () => {
+    const unsubscribe = state.parentnavigation.addListener("focus", () => {
       refresh();
     });
     return unsubscribe;
-  }, [params.parentnavigation]);
+  }, [state.parentnavigation]);
   async function refresh() {
     let index = state.needrefresh.indexOf("getaccountsforedit");
     if (index !== -1) {
