@@ -93,7 +93,6 @@ export default function Engineoil({ navigation, route }) {
   let formattedToday = "";
   let date = route.params.dateselected;
   let selecteddate = new Date(date.date);
-  selecteddate.setDate(selecteddate.getDate() + 1);
   useEffect(() => {
     populatedata();
   }, []);

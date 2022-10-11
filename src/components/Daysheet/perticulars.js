@@ -19,7 +19,6 @@ export default function Perticulars({ navigation, route }) {
   let holddata = [];
   let date = route.params.dateselected;
   let selecteddate = new Date(date.date);
-  selecteddate.setDate(selecteddate.getDate() + 1);
   useEffect(() => {
     populatedata();
   }, []);
@@ -202,6 +201,7 @@ export default function Perticulars({ navigation, route }) {
       cashremaining =
         cashremaining + parseFloat(element.jama) - parseFloat(element.karchu);
     });
+    cashremaining = cashremaining.toFixed(2);
     test.cash = cashremaining;
     test.perticularsdata = data;
     cashchange(cashremaining);
@@ -242,8 +242,15 @@ export default function Perticulars({ navigation, route }) {
           columns={columns}
           datachanged={datachanged}
         />
-        <View>
-          <Text>Cash : {cashleft}</Text>
+        <View
+          style={{
+            margin: 10,
+            padding: 10,
+            backgroundColor: "#fff",
+            width: 200,
+          }}
+        >
+          <Text style={{ color: "#000" }}>Cash : {cashleft}</Text>
         </View>
         <View style={tablestyles.flexview}>
           <Button title="Addrow" onPress={addrow} />
