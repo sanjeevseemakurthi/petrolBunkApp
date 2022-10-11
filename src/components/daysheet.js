@@ -63,6 +63,7 @@ function MyTabs(params) {
               return <Icon name="check" size={20} color="#009" />;
             },
           }}
+          initialParams={{ dateselected: params.dateselected }}
         />
       </Tab.Navigator>
     </>
